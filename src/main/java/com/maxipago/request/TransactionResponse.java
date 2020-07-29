@@ -38,4 +38,5 @@ public class TransactionResponse {
     public String authenticationURL;
     public String fraudScore;
     public String onlineDebitUrl;
+    public String boletoUrl;
 }
