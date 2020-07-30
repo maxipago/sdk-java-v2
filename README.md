@@ -23,9 +23,6 @@ Essa documentação descreverá os endpoints da API e os valores esperados. O SD
 criação dos XMLs, envio e recebimento das requisições, porém é importante que esteja com a documentação para saber os 
 valores esperados em cada requisição.
 
-Os códigos de exemplo disponibilizados aqui, também estão disponíveis na suite de testes e poderão ser executados, todos,
-conforme o caso de uso.
-
 ## Inicialização
 
 O SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
@@ -96,16 +93,48 @@ Você utilizar **apenas este campo** para validar o resultado de uma transação
 > *Para adquirente com estorno online, o `responseCode` com valor 0 significa que o estorno já foi processado, para os
 > offline significa que o estorno está sendo processado (neste caso pode ser posteriomente verificado pela API de Consulta.
 
-## Autorização
+## Transaction request
+
+Transaction request são as requisições relacionadas à criação, edição e remoção de transações - incluindo cartões de crédito
+e débito, boleto, débito online e recorrências.
+ 
+### Exemplos de requisições
+
+Os códigos de exemplo disponibilizados aqui, também estão disponíveis na suite de testes. Para utilizá-los, seja em
+sandbox, seja em produção, você precisará definir seu `merchantId` e `merchantKey`. Assim que tivé-os definidos,
+basta criar uma instância de `Environment` com esses dados. A classe `Environment` possui dois métodos de criação:
+
+* `sandbox`
+* `production`
+
+Utilize esses métodos para facilitar a crianção do ambiente. Você pode, inclusive, abstrair o ambiente; por exemplo:
+
+```java
+// A variável `test` permite a variação do ambiente; se usarmos `true`, a integração vai acontecer no sandbox, mas
+// se usarmos `false`, a integração acontecerá em produção.
+Boolean test = false;
+
+// Usamos o ambiente de produção por padrão
+Environment environment = Environment.production("123-merchant-id", "123-merchant-key");
+
+// mas se estivermos testando, usamos o sandbox
+if (test) {
+    environment = Environment.sandbox("123-merchant-id", "123-merchant-key");
+}
+
+// Agora o ambiente está abstraído e podemos só mudar o valor de test para mudarmos o ambiente sem precisar
+// mudar o restante do código. 
+MaxiPago maxiPago = new MaxiPago(environment);
+```
+
+#### Autorização
 
 A autorização ou pré-autorização é a ação que sensibiliza o limite do cartão de crédito do cliente, porém não há a
 confirmação (captura) da transação, ou seja, não gera cobrança para o consumidor. Para se criar uma autorização utilizando
 o SDK, basta usar o código abaixo:
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.auth()
         .setProcessorId("5")
@@ -123,25 +152,19 @@ maxiPago.auth()
                         .setPhone("11111111111")
                         .setEmail("fulano@de.tal"))
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
 TransactionResponse response = maxiPago.transactionRequest().execute();
-
-System.out.println(response.processorCode);
-System.out.println(response.orderID);
-System.out.println(response.transactionID);
 ```
 
-### Autorização com autenticação
+#### Autorização com autenticação
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.auth()
         .setProcessorId("5")
@@ -159,71 +182,63 @@ maxiPago.auth()
                         .setPhone("11111111111")
                         .setEmail("fulano@de.tal"))
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"))
         .setAuthentication("41", Authentication.DECLINE)
         .setPayment(new Payment(100.0));
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Capturando a pré-autorização
+#### Capturando a pré-autorização
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.capture()
         .setOrderId(orderId)
         .setReferenceNum(referenceNumber)
         .setPayment(new Payment(100.0));
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Cancelando a transaão
+#### Cancelando a transaão
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.cancel()
         .setTransactionId(transactionId);
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Verificando o cartão com uma transação zero dolar
+#### Verificando o cartão com uma transação zero dolar
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.zeroDollar()
         .setProcessorId("1")
         .setReferenceNum("123")
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"));
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Criando uma venda direta com cartão de crédito
+#### Criando uma venda direta com cartão de crédito
 
 Ao contrário da pré-autorização com captura posterior, a venda direta é o ato de autorizar e capturar na mesma requisição.
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.sale()
         .setProcessorId("5")
@@ -241,21 +256,19 @@ maxiPago.sale()
                         .setPhone("11111111111")
                         .setEmail("fulano@de.tal"))
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Criando uma venda direta com cartão de crédito e autenticação
+#### Criando uma venda direta com cartão de crédito e autenticação
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.sale()
         .setProcessorId("5")
@@ -274,25 +287,23 @@ maxiPago.sale()
                         .setEmail("fulano@de.tal"))
         .setAuthentication("41", Authentication.DECLINE)
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Criando uma venda direta com cartão de débito
+#### Criando uma venda direta com cartão de débito
 
 Assim como a venda direta com cartão de crédito e autenticação, a venda direta com cartão de débito também exige
 autenticação. Assim que o cliente mostrar o interesse em fazer o pagamento, a loja deverá criar a venda direta e redirecionar
 o cliente para a página de autenticação. Assim que feita a autenticação, o cliente retornará para a página da loja.
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.sale()
         .setProcessorId("1")
@@ -317,15 +328,13 @@ maxiPago.sale()
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
-maxiPago.transactionRequest().execute();
+TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-### Criando uma autorização com anti-fraude
+#### Criando uma autorização com anti-fraude
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.auth()
         .setProcessorId("5")
@@ -381,7 +390,7 @@ maxiPago.auth()
                                 (new Document()).setDocumentType("CPF")
                                         .setDocumentValue("11111111111")))
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"))
@@ -390,16 +399,12 @@ maxiPago.auth()
         .addItem(2, "456", "Outro item qualquer", 2, 10.0, 5.0);
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
-
-System.out.println(transactionResponse.fraudScore);
 ```
 
-### Criando uma venda com cartão de débito e anti-fraude
+#### Criando uma venda com cartão de débito e anti-fraude
 
 ```java
-MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-        merchantId, merchantKey
-));
+MaxiPago maxiPago = new MaxiPago(environment);
 
 maxiPago.sale()
         .setProcessorId("5")
@@ -455,7 +460,7 @@ maxiPago.sale()
                                 (new Document()).setDocumentType("CPF")
                                         .setDocumentValue("11111111111")))
         .setCreditCard(
-                (new Card()).setNumber("5448280000000007")
+                (new Card()).setNumber("5105105105105100")
                         .setExpMonth("12")
                         .setExpYear("2028")
                         .setCvvNumber("123"))
@@ -464,6 +469,4 @@ maxiPago.sale()
         .addItem(2, "456", "Outro item qualquer", 2, 10.0, 5.0);
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
-
-System.out.println(transactionResponse.fraudScore);
 ```
