@@ -47,6 +47,55 @@ MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
 ));
 ```
 
+## Resposta de transação
+
+Todas as requisições transacionais, retornam uma instância de `com.maxipago.request.TransactionResponse`. Essa instância
+pode ser utilizada para obter os dados de resposta da transação, como `transactionId`, `orderId`, `status` e mensagens e
+códigos de retorno.
+
+A estrutura da classe é a seguinte:
+
+|Tipo|Propriedade|Descrição|
+|----|-----------|---------|
+|String|authCode|Código de autorização retornado pela Adquirente|
+|String|orderID|ID do pedido gerado pela maxiPago! Esse ID será utilizado em outras requisições e, por isso, deverá ser salvo.|
+|String|referenceNum|ID do pedido gerado pela loja. Esse é o código de referência que a loja enviou na requisição.|
+|String|transactionID|ID da transação, gerado pela maxiPago! Assim como o orderId, esse ID será utilizado em outras requisições e deverá ser salvo.|
+|String|transactionTimestamp|Data/hora da transação.|
+|String|responseCode|Indicador do status da transação na maxiPago! Veja detalhes sobre os código de resposta logo abaixo.|
+|String|responseMessage|Mensagem de resposta da transação|
+|String|avsResponseCode|Resposta da verificação AVS, se houver. Sugerimos que a resposta do AVS seja usada para avaliação manual do risco|
+|String|processorCode|Código de retorno da Adquirente. |
+|String|processorMessage|Mensagem de retorno da Adquirente|
+|String|processorName|Nome do adquirente.|
+|String|creditCardBin|BIN do cartão.|
+|String|creditCardLast4|Últimos 4 dígitos do cartão.|
+|String|errorMessage|Mensagem de erro|
+|String|processorTransactionID|ID da transação na Adquirente. Cielo: TID - REDE: NSU|
+|String|processorReferenceNumber|Número de referência da Adquirente. Cielo: NSU - REDE: Comprovante de Venda (CV)|
+|String|creditCardScheme|Identificação do tipo da bandeira|
+|String|authenticationURL|URL de autenticação. O cliente deve ser redirecionado para esta URL para completar a etapa de autenticação|
+|String|fraudScore|Valor de score retornado pelo fraudControl! Quanto menor o valor, menor o risco da transação.|
+|String|onlineDebitUrl|URL para redirecionamento do Débito Online. O cliente deve ser redirecionado para esta URL para completar a transação|
+|String|boletoUrl|URL para geração do boleto|
+
+#### responseCode
+
+Você utilizar **apenas este campo** para validar o resultado de uma transação. Não utilize outros campos da resposta para determinar o sucesso ou falha de uma transação.
+
+* 0 = Aprovada*
+* 1 = Negada
+* 2 = Negada por Duplicidade ou Fraude
+* 5 = Em revisão (Análise Manual de Fraude)
+* 1022 = Erro na operadora do cartão
+* 1024 = Erro nos paramêtros enviados
+* 1025 = Erro nas credenciais da loja
+* 2048 = Erro interno na maxiPago!
+* 4097 = Timeout com a adquirente
+
+> *Para adquirente com estorno online, o `responseCode` com valor 0 significa que o estorno já foi processado, para os
+> offline significa que o estorno está sendo processado (neste caso pode ser posteriomente verificado pela API de Consulta.
+
 ## Autorização
 
 A autorização ou pré-autorização é a ação que sensibiliza o limite do cartão de crédito do cliente, porém não há a
