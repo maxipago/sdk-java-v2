@@ -27,12 +27,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 
 @XmlSeeAlso({TransactionRequest.class, ApiRequest.class, RApiRequest.class})
 public abstract class AbstractRequest<A, B> {
     @XmlElement(name = "verification")
     public Environment verification;
+    public static String encode = StandardCharsets.UTF_8.toString();
 
     public AbstractRequest() {
     }
@@ -83,7 +85,7 @@ public abstract class AbstractRequest<A, B> {
             JAXBContext requestContext = JAXBContext.newInstance(getContext());
 
             Marshaller marshaller = requestContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "iso-8859-1");
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, encode);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
             marshaller.marshal(this, new StreamResult(writer));
@@ -96,10 +98,10 @@ public abstract class AbstractRequest<A, B> {
                     .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
                     .build();
 
-            httpPost.setEntity(new StringEntity(writer.toString()));
+            httpPost.setEntity(new StringEntity(writer.toString(),encode));
             httpPost.setConfig(params);
 
-            httpPost.addHeader("Content-Type", "text/xml; charset=ISO-8859-1");
+            httpPost.addHeader("Content-Type", "text/xml; charset="+encode);
             httpPost.addHeader("User-Agent", "MaxiPago-SDK/1.0 (Java; Linux x86_64)");
 
             HttpResponse response = null;
