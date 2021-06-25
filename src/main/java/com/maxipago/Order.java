@@ -75,11 +75,11 @@ public class Order {
     }
 
     public Transaction createRefund() {
-        cancel = new Transaction();
-        cancel.setProcessorId(null);
-        cancel.setFraudCheck(null);
+        reversal = new Transaction();
+        reversal.setProcessorId(null);
+        reversal.setFraudCheck(null);
 
-        return cancel;
+        return reversal;
     }
 
     public Transaction createRecurringPayment() {

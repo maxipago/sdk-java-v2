@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 
-@XmlSeeAlso(PayType.class)
+@XmlSeeAlso({PayType.class, FraudDetails.class})
 public class Transaction {
     @XmlElement(name = "transactionID")
     public String transactionId;
@@ -58,6 +58,25 @@ public class Transaction {
 
     @XmlElement
     public Recurring recurring;
+
+    @XmlElement
+    public FraudDetails fraudDetails;
+
+    public Transaction fraudDetails(String fraudProcessorID, String fraudToken) {
+        return fraudDetails(fraudProcessorID, fraudToken, "N", "N");
+    }
+
+    public Transaction fraudDetails(String fraudProcessorID, String fraudToken, String captureOnLowRisk, String voidOnHighRisk) {
+        setFraudCheck("Y");
+
+        this.fraudDetails = new FraudDetails();
+        this.fraudDetails.fraudProcessorID = fraudProcessorID;
+        this.fraudDetails.fraudToken = fraudToken;
+        this.fraudDetails.captureOnLowRisk = captureOnLowRisk;
+        this.fraudDetails.voidOnHighRisk = voidOnHighRisk;
+
+        return this;
+    }
 
     public Transaction saveOnFile(String customerToken, String onFileEndDate) {
         this.saveOnFile = new SaveOnFile(customerToken, onFileEndDate);

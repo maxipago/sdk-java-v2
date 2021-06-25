@@ -41,6 +41,10 @@ public class Payment {
         return this;
     }
 
+    public Payment setCreditInstallment(Integer installment) {
+        return setCreditInstallment(new CreditInstallment(installment));
+    }
+
     public Payment setCreditInstallment(CreditInstallment creditInstallment) {
         this.creditInstallment = creditInstallment;
         return this;
