@@ -29,7 +29,7 @@ public class MaxiPago {
     private void createApiRequest(String command) {
         request = new Request();
 
-        environment.setTransaction(false);
+        environment.setAPI(true);
 
         apiRequest = new ApiRequest(command, environment);
         apiRequest.setRequest(request);
