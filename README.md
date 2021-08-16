@@ -227,8 +227,8 @@ maxiPago.sale()
                 		      .setSdkReferenceNumber("17dd3e6f20e5452ca638f106ece38b7f")
                 		      .setSdkTransId("733aa357-285b-41ba-943e-a2c4569739fe")
                 		      .setRenderOptions(new RenderOptions()
-                				.setSdkInterface("NATIVE")
-                				.setSdkUiType("TEXT")));
+                				.setSdkInterface(SdkInterfaceEnum.NATIVE.value)
+                				.setSdkUiType(SdkUiTypeEnum.HTML_OTHER.value)));
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
 ```
