@@ -5,6 +5,7 @@ o SDK oferece os seguintes recursos:
 
 * Autorização
 * Autorização com autenticação - 3DS
+* Venda com autenticação - 3DS V2
 * Captura
 * Venda direta
 * Cancelamento
@@ -191,7 +192,46 @@ maxiPago.auth()
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
+#### Venda com 3DS 2.0
+```java
+MaxiPago maxiPago = new MaxiPago(environment);
+maxiPago.sale()
+        .setProcessorId("5")
+        .setReferenceNum("Teste 012")
+        .setIpAddress("127.0.0.1")
+        .billingAndShipping(
+        (new Customer()).setName("Fulano de Tal")
+                        .setAddress("Rua dos bobos")
+                        .setAddress2("0")
+                        .setDistrict("District")
+                        .setCity("Cidade")
+                        .setState("Estado")
+                        .setPostalCode("11111111")
+                        .setCountry("BR")
+                        .setPhone("11111111111")
+                        .setEmail("fulano@de.tal"))
+                        .setAuthentication("41", Authentication.DECLINE)
+                        .setCreditCard(
+                        (new Card()).setNumber("5448280000000007")
+                        .setExpMonth("12")
+                        .setExpYear("2028")
+                        .setCvvNumber("123"))
+                        .setPayment(new Payment(100.0))
+                         //device informations
+                           .device(new Device()
+                		      .setDeviceType3ds("MOBILE")
+                		      .setSdkEncData("c2RrRW5jRGF0YQ==")
+                		      .setSdkAppId("17dd3e6f-20e5-452c-a638-f106ece38b7f")
+                		      .setSdkEphemeralPubKey("ai7q834kal0984545")
+                		      .setSdkMaxTimeout("05")
+                		      .setSdkReferenceNumber("17dd3e6f20e5452ca638f106ece38b7f")
+                		      .setSdkTransId("733aa357-285b-41ba-943e-a2c4569739fe")
+                		      .setRenderOptions(new RenderOptions()
+                				.setSdkInterface("NATIVE")
+                				.setSdkUiType("TEXT")));
 
+       TransactionResponse response =  maxiPago.transactionRequest().execute();
+```
 #### Capturando a pré-autorização
 
 ```java
