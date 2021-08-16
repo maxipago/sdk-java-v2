@@ -1,5 +1,7 @@
 package com.maxipago;
 
+import com.maxipago.enums.SdkInterfaceEnum;
+import com.maxipago.enums.SdkUiTypeEnum;
 import com.maxipago.paymentmethod.Boleto;
 import com.maxipago.paymentmethod.Card;
 import com.maxipago.paymentmethod.OnlineDebit;
@@ -183,6 +185,73 @@ public class MaxiPagoTest {
                 .setPayment(new Payment(100.0));
 
         maxiPago.transactionRequest().execute();
+    }
+    
+    void shouldCreateSaleWithCredit3DSV2() throws PropertyException {
+    	
+    	MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
+                merchantId, merchantKey
+        ));
+    	
+    	maxiPago.sale()
+        .setProcessorId("1")
+        .setReferenceNum("Teste 3DS version 2.0")
+        .setFraudCheck("N")
+        .setIpAddress("127.0.0.1")
+        .setBilling(
+                (new Customer()).setName("Pedro da Silva")
+                        .setAddress("Avenida Paulista")
+                        .setAddress2("0")
+                        .setDistrict("Centro")
+                        .setCity("São Paulo")
+                        .setState("SP")
+                        .setPostalCode("13211000")
+                        .setCountry("BR")
+                        .setPhone("11111111111")
+                        .setEmail("teste@teste.com")
+                        .addDocument((new Document()).setDocumentType("CPF").setDocumentValue("123.123.345-23")))
+        .setAuthentication("67", Authentication.DECLINE)
+        
+        .setShipping((new Customer()).setName("Pedro da Silva")
+                        .setAddress("Avenida Paulista")
+                        .setAddress2("0")
+                        .setDistrict("Centro")
+                        .setCity("São Paulo")
+                        .setState("SP")
+                        .setPostalCode("13211000")
+                        .setCountry("BR")
+                        .setPhone("1234-5599")
+                        .setEmail("teste@teste.com")
+                        .addDocument((new Document()).setDocumentType("CPF").setDocumentValue("123.123.345-23")))
+        .setCreditCard(
+                (new Card())
+                		.setNumber("4970110000000013")
+                        .setExpMonth("04")
+                        .setExpYear("2025")
+                        .setCvvNumber("123"))
+        .setPayment(new Payment(64.34))
+        .addItem(1, "202101150150", "Compra de passagem rodoviaria", 1, 64.34d, 64.34d)
+        
+        //device informations
+        .device(new Device()
+       		.setScreenHeight("500")
+       		.setScreenWidth("500")
+       		.setTimeZoneOffset(3)
+       		.setColorDepth("24")
+        		.setDeviceType3ds("BROWSER")
+        		.setJavaEnabled(true)
+        		.setLanguage("BR")
+        		.setSdkEncData("c2RrRW5jRGF0YQ==")
+        		.setSdkAppId("17dd3e6f-20e5-452c-a638-f106ece38b7f")
+        		.setSdkEphemeralPubKey("ai7q834kal0984545")
+        		.setSdkMaxTimeout("05")
+        		.setSdkReferenceNumber("17dd3e6f20e5452ca638f106ece38b7f")
+        		.setSdkTransId("733aa357-285b-41ba-943e-a2c4569739fe")
+        		.setRenderOptions(new RenderOptions()
+        		.setSdkInterface(SdkInterfaceEnum.NATIVE.value)
+        		.setSdkUiType(SdkUiTypeEnum.HTML_OTHER.value)));
+
+    			maxiPago.transactionRequest().execute();
     }
 
     void shouldCreateSaleWithDebit() throws PropertyException {
