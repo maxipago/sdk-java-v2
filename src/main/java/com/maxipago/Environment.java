@@ -14,16 +14,26 @@ public class Environment {
 
     private Boolean transaction = true;
     private Boolean reports = false;
+    private Boolean api = false;
+    
+    public Environment setAPI(Boolean API) {
+        this.transaction = false;
+        this.reports = false;
+        this.api = API;
+        return this;
+    }
 
     public Environment setTransaction(Boolean transaction) {
         this.transaction = transaction;
         this.reports = !transaction;
+        this.api = !transaction;
         return this;
     }
 
     public Environment setReports(Boolean reports) {
         this.reports = reports;
         this.transaction = !reports;
+        this.api = !reports;
         return this;
     }
 
@@ -56,14 +66,20 @@ public class Environment {
     }
 
     public String getEndpoint() {
-        if (transaction) {
-            return apiURL + "/UniversalAPI/postXML";
+        StringBuilder endPoint = new StringBuilder(apiURL);
+    	
+    	if (transaction) {
+    		endPoint.append("/UniversalAPI/postXML");
         }
 
         if (reports) {
-            return apiURL + "/ReportsAPI/servlet/ReportsAPI";
+        	endPoint.append("/ReportsAPI/servlet/ReportsAPI");
+        }
+        
+        if (api) {
+        	endPoint.append("/UniversalAPI/postAPI");
         }
 
-        return apiURL + "/UniversalAPI/postAPI";
+        return endPoint.toString();
     }
 }

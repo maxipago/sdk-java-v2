@@ -61,6 +61,9 @@ public class Transaction {
 
     @XmlElement
     public FraudDetails fraudDetails;
+    
+    @XmlElement
+    public Device device;
 
     public Transaction fraudDetails(String fraudProcessorID, String fraudToken) {
         return fraudDetails(fraudProcessorID, fraudToken, "N", "N");
@@ -141,6 +144,11 @@ public class Transaction {
     public Transaction setShipping(Customer shipping) {
         this.shipping = shipping;
         return this;
+    }
+    
+    public Transaction device(Device device) {
+    	this.device = device;
+    	return this;		
     }
 
     public Transaction setToken(Token token) {
