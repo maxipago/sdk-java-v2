@@ -11,6 +11,7 @@ public class PayType {
     public Boleto boleto;
     public OnlineDebit onlineDebit;
     public Token onFile;
+    public Pix pix;
 
     public PayType setToken(Token onFile) {
         this.onFile = onFile;
@@ -36,6 +37,11 @@ public class PayType {
 
     public PayType setOnlineDebit(OnlineDebit onlineDebit) {
         this.onlineDebit = onlineDebit;
+        return this;
+    }
+
+    public PayType setPix(Pix pix) {
+        this.pix = pix;
         return this;
     }
 }

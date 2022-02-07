@@ -9,5 +9,8 @@
         <module name="sdk-java-v2" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="sdk-java-v2" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -150,6 +150,13 @@ public class Transaction {
         return setPayType(payType);
     }
 
+    public Transaction setPix(Pix pix) {
+        PayType payType = new PayType();
+        payType.pix = pix;
+
+        return setPayType(payType);
+    }
+
     public Transaction setCreditCard(Card creditCard) {
         PayType payType = new PayType();
         payType.creditCard = creditCard;

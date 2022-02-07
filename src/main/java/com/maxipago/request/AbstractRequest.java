@@ -22,12 +22,18 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 @XmlSeeAlso({TransactionRequest.class, ApiRequest.class, RApiRequest.class})
@@ -50,6 +56,23 @@ public abstract class AbstractRequest<A, B> {
     protected void specialCase(B response, Field field, Document document) {
     }
 
+    private void log(Document doc) {
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+
+            Logger.getLogger("SDK-Java").info(sw.toString());
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected B parse(InputStream inputStream) {
         B response = getResponseObject();
 
@@ -58,6 +81,8 @@ public abstract class AbstractRequest<A, B> {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(inputStream);
             Field[] fields = response.getClass().getDeclaredFields();
+
+            log(document);
 
             for (Field field : fields) {
                 try {
@@ -98,10 +123,12 @@ public abstract class AbstractRequest<A, B> {
                     .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
                     .build();
 
-            httpPost.setEntity(new StringEntity(writer.toString(),encode));
+//            Logger.getLogger("SDK-Java").info(writer.toString());
+
+            httpPost.setEntity(new StringEntity(writer.toString(), encode));
             httpPost.setConfig(params);
 
-            httpPost.addHeader("Content-Type", "text/xml; charset="+encode);
+            httpPost.addHeader("Content-Type", "text/xml; charset=" + encode);
             httpPost.addHeader("User-Agent", "MaxiPago-SDK/1.0 (Java; Linux x86_64)");
 
             HttpResponse response = null;

@@ -1,15 +1,27 @@
 package com.maxipago;
 
 import javax.xml.bind.annotation.XmlElement;
-import java.util.ArrayList;
 
 public class Customer {
+    @XmlElement
     public String name;
+
+    @XmlElement
     public String address;
+
+    @XmlElement
     public String address1;
+
+    @XmlElement
     public String address2;
+
+    @XmlElement
     public String district;
+
+    @XmlElement
     public String city;
+
+    @XmlElement
     public String state;
 
     public Customer setAddress1(String address1) {
@@ -19,18 +31,44 @@ public class Customer {
 
     @XmlElement(name = "postalcode")
     public String postalCode;
+
+    @XmlElement
     public String country;
+
+    @XmlElement
     public String phone;
+
+    @XmlElement
     public String email;
+
+    @XmlElement
     public String companyName;
+
+    @XmlElement
     public String addressType;
+
+    @XmlElement
     public String addressNumber;
+
+    @XmlElement
     public String deliveryDate;
+
+    @XmlElement
     public String shippingType;
-    public String id;
+
+    @XmlElement
+    public String id = "123";
+
+    @XmlElement
     public String type;
+
+    @XmlElement
     public String gender;
+
+    @XmlElement
     public String birthDate;
+
+    @XmlElement
     public String zip;
 
     public Customer setZip(String zip) {

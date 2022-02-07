@@ -1,9 +1,6 @@
 package com.maxipago;
 
-import com.maxipago.paymentmethod.Boleto;
-import com.maxipago.paymentmethod.Card;
-import com.maxipago.paymentmethod.OnlineDebit;
-import com.maxipago.paymentmethod.Token;
+import com.maxipago.paymentmethod.*;
 import com.maxipago.request.RApiResponse;
 import com.maxipago.request.TransactionResponse;
 import junit.framework.Assert;
@@ -12,10 +9,47 @@ import org.junit.jupiter.api.Test;
 import javax.xml.bind.PropertyException;
 
 public class MaxiPagoTest {
-    String merchantId = "";
-    String merchantKey = "";
+    String merchantId = "11631";
+    String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
 
     public MaxiPagoTest() {
+    }
+
+    @Test
+    void shouldCreatePix() throws PropertyException {
+        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
+                merchantId, merchantKey
+        ));
+
+        maxiPago.pix()
+                .setProcessorId("205")
+                .setReferenceNum("Teste 123")
+                .setIpAddress("127.0.0.1")
+                .setBilling(
+                        (new Customer()).setName("Fulano de Tal")
+                                .setAddress("Rua dos bobos")
+                                .setAddress2("0")
+                                .setDistrict("District")
+                                .setCity("Cidade")
+                                .setState("Estado")
+                                .setPostalCode("11111111")
+                                .setCountry("BR")
+                                .setPhone("11111111111")
+                                .setEmail("fulano@de.tal")
+                                .addDocument(new Document("CPF", "58877649020")))
+                .setPix(
+                        (new Pix()).setExpirationTime(300)
+                                .setPaymentInfo("Uma informação sobre o pagamento")
+                                .addInfo("Um nome", "R$ 10,00")
+                                .addInfo("Outro nome", "R$ 10,00"))
+                .setPayment(new Payment(20.00));
+
+        TransactionResponse response = maxiPago.transactionRequest().execute();
+
+        System.out.println(response.processorCode);
+        System.out.println(response.orderID);
+        System.out.println(response.transactionID);
+
     }
 
     void shouldCreateAuth() throws PropertyException {
@@ -431,6 +465,19 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    void shouldRefundPixTransaction() throws PropertyException {
+        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
+                merchantId, merchantKey
+        ));
+
+        maxiPago.pixRefund()
+                .setOrderId("0123")
+                .setReferenceNum("ref-123")
+                .setPayment(new Payment(100.0));
+
+        maxiPago.transactionRequest().execute();
+    }
+
     void shouldCreateRecurringPayment() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -807,7 +854,6 @@ public class MaxiPagoTest {
         }
     }
 
-    @Test
     void shouldConsultOrderList() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey

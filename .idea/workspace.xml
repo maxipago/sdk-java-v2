@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="sdk-java-v2:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3d3cdb78-e7f1-49bc-87c6-40015448f850" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/sdk_java_v2_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_istack_istack_commons_runtime_3_0_7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_xml_fastinfoset_FastInfoset_1_2_15.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_11.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_javax_activation_api_1_2_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_4_0_b180830_0359.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jaxb_jaxb_runtime_2_4_0_b180830_0438.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jaxb_txw2_2_4_0_b180830_0438.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jvnet_staxex_stax_ex_1_8.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xerces_xercesImpl_2_12_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_3_04.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk-java-v2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/sdk-java-v2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/MaxiPago.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/MaxiPago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/paymentmethod/PayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/paymentmethod/PayType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/request/AbstractRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/request/AbstractRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/request/TransactionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/request/TransactionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/maxipago/request/TransactionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/maxipago/request/TransactionResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/maxipago/MaxiPagoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/maxipago/MaxiPagoTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/request/TransactionRequest.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/MaxiPago.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/Phones.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/Order.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/test/java/com/maxipago/MaxiPagoTest.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/paymentmethod/pix/ExtraInfo.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/paymentmethod/Pix.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/request/AbstractRequest.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/paymentmethod/PayType.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/Document.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/paymentmethod/pix/Info.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/Transaction.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/request/ApiRequest.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/maxipago/request/RApiRequest.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="1to0uoIq3N20V9GUMmqUUK06Jhn" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.22887324" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager" selected="JUnit.MaxiPagoTest">
+    <configuration name="rest-api#1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api.http" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="MaxiPagoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sdk-java-v2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.maxipago.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.maxipago" />
+      <option name="MAIN_CLASS_NAME" value="com.maxipago.MaxiPagoTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MaxiPagoTest.shouldCreatePix" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sdk-java-v2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.maxipago.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.maxipago" />
+      <option name="MAIN_CLASS_NAME" value="com.maxipago.MaxiPagoTest" />
+      <option name="METHOD_NAME" value="shouldCreatePix" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.MaxiPagoTest" />
+      <item itemvalue="JUnit.MaxiPagoTest.shouldCreatePix" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.MaxiPagoTest.shouldCreatePix" />
+        <item itemvalue="JUnit.MaxiPagoTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3d3cdb78-e7f1-49bc-87c6-40015448f850" name="Default Changelist" comment="" />
+      <created>1623420362038</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1623420362038</updated>
+      <workItem from="1623420366309" duration="2107000" />
+      <workItem from="1623426879625" duration="982000" />
+      <workItem from="1623434310870" duration="327000" />
+      <workItem from="1623781727378" duration="820000" />
+      <workItem from="1623865992631" duration="1363000" />
+      <workItem from="1623960029472" duration="2772000" />
+      <workItem from="1624026869638" duration="779000" />
+      <workItem from="1624473630940" duration="400000" />
+      <workItem from="1624632281183" duration="204000" />
+      <workItem from="1624632662310" duration="134000" />
+      <workItem from="1632334589166" duration="3690000" />
+      <workItem from="1632338576003" duration="1136000" />
+      <workItem from="1632341324877" duration="512000" />
+      <workItem from="1632343163922" duration="294000" />
+      <workItem from="1632411415971" duration="44000" />
+      <workItem from="1633697808705" duration="194000" />
+      <workItem from="1633700592668" duration="70000" />
+      <workItem from="1635446064401" duration="1377000" />
+      <workItem from="1636029375549" duration="151000" />
+      <workItem from="1637247132567" duration="48000" />
+      <workItem from="1639401546379" duration="1415000" />
+      <workItem from="1639684040598" duration="1334000" />
+      <workItem from="1640189440244" duration="815000" />
+      <workItem from="1640271483311" duration="599000" />
+      <workItem from="1641478556664" duration="67000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -69,6 +69,12 @@ public class MaxiPago {
         return request.filterOptions;
     }
 
+    public Transaction pix() {
+        createTransactionRequest();
+
+        return order.createSale();
+    }
+
     public Transaction auth() {
         createTransactionRequest();
 
@@ -91,6 +97,12 @@ public class MaxiPago {
         createTransactionRequest();
 
         return order.createVoid();
+    }
+
+    public Transaction pixRefund() {
+        createTransactionRequest();
+
+        return order.createPixRefund();
     }
 
     public Transaction refund() {

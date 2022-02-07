@@ -39,4 +39,6 @@ public class TransactionResponse {
     public String fraudScore;
     public String onlineDebitUrl;
     public String boletoUrl;
+    public String emv;
+    public String imagem_base64;
 }

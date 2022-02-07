@@ -23,6 +23,9 @@ public class Order {
     @XmlElement(name = "return")
     private Transaction reversal;
 
+    @XmlElement(name = "pixReturn")
+    public Transaction pixReturn;
+
     @XmlElement
     private Transaction zeroDollar;
 
@@ -72,6 +75,14 @@ public class Order {
         cancel.setFraudCheck(null);
 
         return cancel;
+    }
+
+    public Transaction createPixRefund() {
+        reversal = new Transaction();
+        reversal.setProcessorId(null);
+        reversal.setFraudCheck(null);
+
+        return reversal;
     }
 
     public Transaction createRefund() {
