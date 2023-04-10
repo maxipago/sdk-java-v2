@@ -1,19 +1,14 @@
 package com.maxipago.request;
 
-import com.maxipago.Environment;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -28,19 +23,32 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import com.maxipago.Environment;
 
 @XmlSeeAlso({TransactionRequest.class, ApiRequest.class, RApiRequest.class})
 public abstract class AbstractRequest<A, B> {
     @XmlElement(name = "verification")
     public Environment verification;
     public static String encode = StandardCharsets.UTF_8.toString();
+    
+    private static final String EXTERNAL_GENERAL_ENTITIES 	= "http://xml.org/sax/features/external-general-entities";
+	private static final String EXTERNAL_PARAMETER_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
+	private static final String LOAD_EXTERNAL_DTD			= "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+	private static final String DISALLOW_DOCTYPE_DECL 		= "http://apache.org/xml/features/disallow-doctype-decl";
 
     public AbstractRequest() {
     }
@@ -60,11 +68,19 @@ public abstract class AbstractRequest<A, B> {
         try {
             StringWriter sw = new StringWriter();
             TransformerFactory tf = TransformerFactory.newInstance();
+            tf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            tf.setFeature(AbstractRequest.DISALLOW_DOCTYPE_DECL,true);
+            tf.setFeature(AbstractRequest.EXTERNAL_GENERAL_ENTITIES,false);
+            tf.setFeature(AbstractRequest.EXTERNAL_PARAMETER_ENTITIES,false);
+            tf.setFeature(AbstractRequest.LOAD_EXTERNAL_DTD,false);
+            
+            
             Transformer transformer = tf.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            
             transformer.transform(new DOMSource(doc), new StreamResult(sw));
 
             Logger.getLogger("SDK-Java").info(sw.toString());
