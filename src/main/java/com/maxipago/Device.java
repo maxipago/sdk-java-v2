@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Device {
 
-	public String deviceType3ds;
+	public String deviceType3ds="WEB";
     public String colorDepth;
     public boolean javaEnabled;
     public String language;
@@ -24,12 +24,6 @@ public class Device {
     @XmlElement(name = "renderOptions")
     public RenderOptions renderOptions;
     
-    public Device setDeviceType3ds(String deviceType3ds) {
-        this.deviceType3ds = deviceType3ds;
-        return this;
-    }
-
-
 	public Device setColorDepth(String colorDepth) {
 		this.colorDepth = colorDepth;
 		return this;
