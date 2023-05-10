@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Device {
 
-	public String deviceType3ds="WEB";
+	public String deviceType3ds="BROWSER";
     public String colorDepth;
     public boolean javaEnabled;
     public String language;
