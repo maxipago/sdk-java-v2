@@ -86,7 +86,8 @@ public class MaxiPagoTest {
         System.out.println(response.transactionID);
     }
 
-    void shouldCreateAuthWith3DS() throws PropertyException {
+    @Test
+    public void shouldCreateAuthWith3DS() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));

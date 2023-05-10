@@ -45,11 +45,6 @@ public abstract class AbstractRequest<A, B> {
     public Environment verification;
     public static String encode = StandardCharsets.UTF_8.toString();
     
-    private static final String EXTERNAL_GENERAL_ENTITIES 	= "http://xml.org/sax/features/external-general-entities";
-	private static final String EXTERNAL_PARAMETER_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
-	private static final String LOAD_EXTERNAL_DTD			= "http://apache.org/xml/features/nonvalidating/load-external-dtd";
-	private static final String DISALLOW_DOCTYPE_DECL 		= "http://apache.org/xml/features/disallow-doctype-decl";
-
     public AbstractRequest() {
     }
 
@@ -69,11 +64,9 @@ public abstract class AbstractRequest<A, B> {
             StringWriter sw = new StringWriter();
             TransformerFactory tf = TransformerFactory.newInstance();
             tf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            tf.setFeature(AbstractRequest.DISALLOW_DOCTYPE_DECL,true);
-            tf.setFeature(AbstractRequest.EXTERNAL_GENERAL_ENTITIES,false);
-            tf.setFeature(AbstractRequest.EXTERNAL_PARAMETER_ENTITIES,false);
-            tf.setFeature(AbstractRequest.LOAD_EXTERNAL_DTD,false);
             
+            tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
             
             Transformer transformer = tf.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
