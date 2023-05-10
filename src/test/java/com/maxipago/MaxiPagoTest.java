@@ -86,12 +86,14 @@ public class MaxiPagoTest {
         System.out.println(response.transactionID);
     }
 
-    void shouldCreateAuthWith3DS() throws PropertyException {
+    @Test
+    public void shouldCreateAuthWith3DS() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
 
         maxiPago.auth()
+        		.device(new Device())
                 .setProcessorId("5")
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
