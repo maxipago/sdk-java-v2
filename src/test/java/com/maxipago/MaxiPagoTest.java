@@ -93,6 +93,7 @@ public class MaxiPagoTest {
         ));
 
         maxiPago.auth()
+        		.device(new Device())
                 .setProcessorId("5")
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
