@@ -219,7 +219,7 @@ maxiPago.sale()
                         .setPayment(new Payment(100.0))
                          //device informations
                            .device(new Device()
-                		      .setDeviceType3ds("MOBILE")
+                		      .setDeviceType3ds("BROWSER")
                 		      .setSdkEncData("c2RrRW5jRGF0YQ==")
                 		      .setSdkAppId("17dd3e6f-20e5-452c-a638-f106ece38b7f")
                 		      .setSdkEphemeralPubKey("ai7q834kal0984545")
