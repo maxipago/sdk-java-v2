@@ -1,7 +1,7 @@
 # SDK-Java
 
-Esse SDK foi construído para facilitar o processo de integração com a maxiPago! Smart Payments. Nesse momento
-o SDK oferece os seguintes recursos:
+Esse SDK foi construído para facilitar o processo de integração com o gateway maxipago. Atualmente 
+a SDK oferece os seguintes recursos:
 
 * Autorização
 * Autorização com autenticação - 3DS
@@ -11,7 +11,7 @@ o SDK oferece os seguintes recursos:
 * Cancelamento
 * Estorno
 * Autorização com Antifraude
-* Verificação de cartão - 0 dolar
+* Verificação de cartão - Zero Dollar
 * Venda direta com cartão de débito
 * Boleto bancário
 * Transferência bancária
