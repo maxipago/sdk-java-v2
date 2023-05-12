@@ -1,6 +1,6 @@
 # SDK-Java
 
-Esse SDK foi construído para abstrair e facilitar o processo de integração com a maxiPago! Smart Payments. Nesse momento
+Esse SDK foi construído para facilitar o processo de integração com a maxiPago! Smart Payments. Nesse momento
 o SDK oferece os seguintes recursos:
 
 * Autorização
