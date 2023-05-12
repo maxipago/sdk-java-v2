@@ -9,7 +9,7 @@ a SDK oferece os seguintes recursos:
 * Cancelamento
 * Estorno
 * Autorização com Antifraude
-* Venda com Autenticação (cartão de crédito e débito)- 3DS V2
+* Venda direta com Autenticação (cartão de crédito e débito)- 3DS V2
 * Verificação de cartão - Zero Dollar
 * Boleto bancário
 * Cadastro, atualização e remoção de clientes
@@ -17,13 +17,13 @@ a SDK oferece os seguintes recursos:
 
 
 Para acesso as documentações de todos os tipos de requisições disponíveis, acesse: [maxiPago! Developers](https://developers.maxipago.com/).
-Essa documentação descreverá os endpoints da API e os valores esperados. O SDK irá abstrair toda a complexidade da
+Essa documentação descreverá os endpoints da API e os valores esperados. A SDK irá abstrair toda a complexidade da
 criação dos XMLs, envio e recebimento das requisições, porém é importante que esteja com a documentação para saber os 
 valores esperados em cada requisição.
 
 ## Inicialização
 
-O SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
+A SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
 construtor da classe MaxiPago:
 
 ### Produção
@@ -76,7 +76,7 @@ A estrutura da classe é a seguinte:
 
 #### responseCode
 
-Você utilizar **apenas este campo** para validar o resultado de uma transação. Não utilize outros campos da resposta para determinar o sucesso ou falha de uma transação.
+Utilize **apenas este campo** para validar o resultado de uma transação. Não utilize outros campos da resposta para determinar o sucesso ou falha de uma transação.
 
 * 0 = Aprovada*
 * 1 = Negada
@@ -99,7 +99,7 @@ e débito, boleto, débito online e recorrências.
 ### Exemplos de requisições
 
 Os códigos de exemplo disponibilizados aqui, também estão disponíveis na suite de testes. Para utilizá-los, seja em
-sandbox, seja em produção, você precisará definir seu `merchantId` e `merchantKey`. Assim que tivé-os definidos,
+sandbox ou em produção, você precisará definir seu `merchantId` e `merchantKey`. Assim que os obter,
 basta criar uma instância de `Environment` com esses dados. A classe `Environment` possui dois métodos de criação:
 
 * `sandbox`
