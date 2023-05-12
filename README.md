@@ -4,20 +4,17 @@ Esse SDK foi construído para facilitar o processo de integração com o gateway
 a SDK oferece os seguintes recursos:
 
 * Autorização
-* Autorização com autenticação - 3DS
-* Venda com autenticação - 3DS V2
 * Captura
 * Venda direta
 * Cancelamento
 * Estorno
-* Autorização com Antifraude
+* Venda com Antifraude
+* Venda com Autenticação (cartão de crédito e débito)- 3DS V2
 * Verificação de cartão - Zero Dollar
-* Venda direta com cartão de débito
 * Boleto bancário
-* Transferência bancária
 * Cadastro, atualização e remoção de clientes
-    * Adição e remoção de cartões dos clientes
-* Consultas
+* Adição e remoção de cartões dos clientes
+
 
 Para acesso às documentações de todos os tipos de requisições disponíveis, acesse: [maxiPago! Developers](https://developers.maxipago.com/).
 Essa documentação descreverá os endpoints da API e os valores esperados. O SDK irá abstrair toda a complexidade da
