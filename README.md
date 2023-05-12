@@ -8,7 +8,7 @@ a SDK oferece os seguintes recursos:
 * Venda direta
 * Cancelamento
 * Estorno
-* Venda com Antifraude
+* Autorização com Antifraude
 * Venda com Autenticação (cartão de crédito e débito)- 3DS V2
 * Verificação de cartão - Zero Dollar
 * Boleto bancário
@@ -16,7 +16,7 @@ a SDK oferece os seguintes recursos:
 * Adição e remoção de cartões dos clientes
 
 
-Para acesso às documentações de todos os tipos de requisições disponíveis, acesse: [maxiPago! Developers](https://developers.maxipago.com/).
+Para acesso as documentações de todos os tipos de requisições disponíveis, acesse: [maxiPago! Developers](https://developers.maxipago.com/).
 Essa documentação descreverá os endpoints da API e os valores esperados. O SDK irá abstrair toda a complexidade da
 criação dos XMLs, envio e recebimento das requisições, porém é importante que esteja com a documentação para saber os 
 valores esperados em cada requisição.
