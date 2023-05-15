@@ -9,7 +9,7 @@ a SDK oferece os seguintes recursos:
 * Cancelamento
 * Estorno
 * Autorização com Antifraude
-* Venda direta com Autenticação (cartão de crédito e débito)- 3DS V2
+* Venda direta com Autenticação - 3DS V2 (cartão de crédito e débito)
 * Verificação de cartão - Zero Dollar
 * Boleto bancário
 * Cadastro, atualização e remoção de clientes
@@ -189,7 +189,7 @@ maxiPago.auth()
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
-#### Venda com 3DS 2.0
+#### Venda direta com Autenticação 3DS V2 (cartão de crédito e débito)
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
 maxiPago.sale()
@@ -436,7 +436,7 @@ maxiPago.auth()
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Criando uma venda com cartão de débito e anti-fraude
+#### Criando uma venda com cartão de débito e antifraude
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
