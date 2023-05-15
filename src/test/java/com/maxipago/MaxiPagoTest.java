@@ -1,12 +1,18 @@
 package com.maxipago;
 
-import com.maxipago.paymentmethod.*;
-import com.maxipago.request.RApiResponse;
-import com.maxipago.request.TransactionResponse;
-import junit.framework.Assert;
+import javax.xml.bind.PropertyException;
+
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.PropertyException;
+import com.maxipago.paymentmethod.Boleto;
+import com.maxipago.paymentmethod.Card;
+import com.maxipago.paymentmethod.OnlineDebit;
+import com.maxipago.paymentmethod.Pix;
+import com.maxipago.paymentmethod.Token;
+import com.maxipago.request.RApiResponse;
+import com.maxipago.request.TransactionResponse;
+
+import junit.framework.Assert;
 
 public class MaxiPagoTest {
     String merchantId = "11631";
@@ -26,8 +32,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .setBilling(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -35,7 +41,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal")
+                                .setEmail("cliente@loja.com")
                                 .addDocument(new Document("CPF", "58877649020")))
                 .setPix(
                         (new Pix()).setExpirationTime(300)
@@ -52,6 +58,7 @@ public class MaxiPagoTest {
 
     }
 
+    @Test
     void shouldCreateAuth() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -62,8 +69,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -71,7 +78,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setCreditCard(
                         (new Card()).setNumber("5448280000000007")
                                 .setExpMonth("12")
@@ -94,12 +101,13 @@ public class MaxiPagoTest {
 
         maxiPago.auth()
         		.device(new Device())
+        		.device((new Device()).setColorDepth(""))
                 .setProcessorId("5")
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -107,7 +115,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setCreditCard(
                         (new Card()).setNumber("5448280000000007")
                                 .setExpMonth("12")
@@ -118,7 +126,8 @@ public class MaxiPagoTest {
 
         maxiPago.transactionRequest().execute();
     }
-
+    
+    @Test
     void shouldCaptureAuth() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -132,6 +141,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCancelTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -142,7 +152,8 @@ public class MaxiPagoTest {
 
         maxiPago.transactionRequest().execute();
     }
-
+    
+    @Test
     void shouldCreateZeroDollarTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -159,7 +170,8 @@ public class MaxiPagoTest {
 
         maxiPago.transactionRequest().execute();
     }
-
+    
+    @Test
     void shouldCreateSaleWithCredit() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -170,8 +182,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 012")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -179,7 +191,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setCreditCard(
                         (new Card()).setNumber("5448280000000007")
                                 .setExpMonth("12")
@@ -190,6 +202,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateSaleWithCredit3DS() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -200,8 +213,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 012")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -209,7 +222,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setAuthentication("41", Authentication.DECLINE)
                 .setCreditCard(
                         (new Card()).setNumber("5448280000000007")
@@ -221,6 +234,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateSaleWithDebit() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -231,8 +245,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 012")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -240,7 +254,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setAuthentication("41", Authentication.DECLINE)
                 .setDebitCard(
                         (new Card()).setNumber("4000000000000002")
@@ -252,6 +266,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateAuthWithAntiFraud() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -263,8 +278,8 @@ public class MaxiPagoTest {
                 .setIpAddress("127.0.0.1")
                 .setFraudCheck("Y")
                 .setBilling(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -273,7 +288,7 @@ public class MaxiPagoTest {
                                 .setCountry("BR")
                                 .setPhone("11111111111")
                                 .setCompanyName("Uma empresa qualquer")
-                                .setEmail("fulano@de.tal")
+                                .setEmail("cliente@loja.com")
                                 .addPhone(
                                         (new Phone()).setPhoneCountryCode("55")
                                                 .setPhoneAreaCode("16")
@@ -291,8 +306,8 @@ public class MaxiPagoTest {
                                                 .setDocumentValue("11111111111")))
 
                 .setShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -300,7 +315,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal")
+                                .setEmail("cliente@loja.com")
                                 .addPhone(
                                         (new Phone()).setPhoneCountryCode("55")
                                                 .setPhoneAreaCode("16")
@@ -324,6 +339,7 @@ public class MaxiPagoTest {
         System.out.println(transactionResponse.fraudScore);
     }
 
+    @Test
     void shouldCreateSaleWithAntiFraud() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -335,8 +351,8 @@ public class MaxiPagoTest {
                 .setIpAddress("127.0.0.1")
                 .setFraudCheck("Y")
                 .setBilling(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -345,7 +361,7 @@ public class MaxiPagoTest {
                                 .setCountry("BR")
                                 .setPhone("11111111111")
                                 .setCompanyName("Uma empresa qualquer")
-                                .setEmail("fulano@de.tal")
+                                .setEmail("cliente@loja.com")
                                 .addPhone(
                                         (new Phone()).setPhoneCountryCode("55")
                                                 .setPhoneAreaCode("16")
@@ -363,8 +379,8 @@ public class MaxiPagoTest {
                                                 .setDocumentValue("11111111111")))
 
                 .setShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -372,7 +388,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal")
+                                .setEmail("cliente@loja.com")
                                 .addPhone(
                                         (new Phone()).setPhoneCountryCode("55")
                                                 .setPhoneAreaCode("16")
@@ -396,6 +412,7 @@ public class MaxiPagoTest {
         System.out.println(transactionResponse.fraudScore);
     }
 
+    @Test
     void shouldCreateBoleto() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -407,8 +424,8 @@ public class MaxiPagoTest {
                 .setIpAddress("127.0.0.1")
                 .setCustomerIdExt("999")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -416,7 +433,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setBoleto(
                         (new Boleto()).setNumber("1212")
                                 .setExpirationDate("2020-05-09")
@@ -426,6 +443,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateOnlineDebit() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -439,8 +457,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -448,7 +466,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setOnlineDebit(
                         (new OnlineDebit()).setParametersURL("param=123"))
                 .setPayment(new Payment(100.0));
@@ -456,6 +474,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldRefundTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -467,6 +486,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldRefundPixTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -480,6 +500,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateRecurringPayment() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -490,8 +511,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -499,7 +520,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setCreditCard(
                         (new Card()).setNumber("5448280000000007")
                                 .setExpMonth("12")
@@ -518,6 +539,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldModifyRecurringPayment() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -533,28 +555,29 @@ public class MaxiPagoTest {
                         .setLastDate("2020-12-31")
                         .setLastAmount(22.0)
                         .setInstallments(10))
-                .setBillingInfo((new Customer()).setName("Fulano de Tal")
-                        .setAddress1("Rua dos bobos")
+                .setBillingInfo((new Customer()).setName("Nome como esta gravado no cartao")
+                        .setAddress1("Rua Volkswagen, 100")
                         .setAddress2("0")
                         .setCity("Cidade")
                         .setState("SP")
                         .setZip("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
-                .setShippingInfo((new Customer()).setName("Fulano de Tal")
-                        .setAddress1("Rua dos bobos")
+                        .setEmail("cliente@loja.com"))
+                .setShippingInfo((new Customer()).setName("Nome como esta gravado no cartao")
+                        .setAddress1("Rua Volkswagen, 100")
                         .setAddress2("0")
                         .setCity("Cidade")
                         .setState("SP")
                         .setZip("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"));
+                        .setEmail("cliente@loja.com"));
 
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldCancelRecurringPayment() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -566,6 +589,7 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldCreateConsumer() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -573,22 +597,23 @@ public class MaxiPagoTest {
 
         maxiPago.addConsumer()
                 .setCustomerIdExt("123")
-                .setFirstName("Fulano")
-                .setLastName("de Tal")
-                .setAddress1("Rua dos bobos")
+                .setFirstName("PrimeiroNome")
+                .setLastName("UltimoNome")
+                .setAddress1("Rua Volkswagen, 100")
                 .setAddress2("0")
                 .setCity("Cidade")
                 .setState("Estado")
                 .setZip("11111111")
                 .setCountry("BR")
                 .setPhone("11111111111")
-                .setEmail("fulano@de.tal")
+                .setEmail("cliente@loja.com")
                 .setDob("01/01/1900")
                 .setSex("M");
 
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldUpdateConsumer() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -599,20 +624,21 @@ public class MaxiPagoTest {
                 .setCustomerIdExt("123")
                 .setFirstName("Felisbino")
                 .setLastName("de Lima")
-                .setAddress1("Rua dos bobos")
+                .setAddress1("Rua Volkswagen, 100")
                 .setAddress2("0")
                 .setCity("Cidade")
                 .setState("Estado")
                 .setZip("11111111")
                 .setCountry("BR")
                 .setPhone("11111111111")
-                .setEmail("fulano@de.tal")
+                .setEmail("cliente@loja.com")
                 .setDob("01/01/1900")
                 .setSex("M");
 
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldAddCardOnFile() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -623,7 +649,7 @@ public class MaxiPagoTest {
                 .setCreditCardNumber("5448280000000007")
                 .setExpirationMonth("12")
                 .setExpirationYear("2025")
-                .setBillingName("Fulano de tal")
+                .setBillingName("Nome como esta gravado no cartao")
                 .setBillingAddress1("Av. Marcos Penteado de Ulhoa Rodrigues, 939")
                 .setBillingAddress2("11 Andar")
                 .setBillingCity("Barueri")
@@ -638,6 +664,7 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldCreateAuthWithToken() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -648,8 +675,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -657,7 +684,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setToken(new Token("3039749", "35IbiFgNfJQ=", "123"))
                 .setPayment(new Payment(100.0));
 
@@ -674,8 +701,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 012")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -683,13 +710,14 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setToken(new Token("3039749", "35IbiFgNfJQ=", "123"))
                 .setPayment(new Payment(100.0));
 
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateZeroDollarTransactionAndSaveOnFile() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -708,6 +736,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateAuthAndSaveOnFile() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -718,8 +747,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -727,7 +756,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setCreditCard(
                         (new Card()).setNumber("4235647728025682")
                                 .setExpMonth("12")
@@ -739,6 +768,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateSaleAndSaveOnFile() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -749,8 +779,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -758,7 +788,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setCreditCard(
                         (new Card()).setNumber("4235647728025682")
                                 .setExpMonth("12")
@@ -770,6 +800,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldCreateRecurringPaymentWithToken() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -780,8 +811,8 @@ public class MaxiPagoTest {
                 .setReferenceNum("Teste 123")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
-                        (new Customer()).setName("Fulano de Tal")
-                                .setAddress("Rua dos bobos")
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
                                 .setAddress2("0")
                                 .setDistrict("District")
                                 .setCity("Cidade")
@@ -789,7 +820,7 @@ public class MaxiPagoTest {
                                 .setPostalCode("11111111")
                                 .setCountry("BR")
                                 .setPhone("11111111111")
-                                .setEmail("fulano@de.tal"))
+                                .setEmail("cliente@loja.com"))
                 .setToken(new Token("3039749", "35IbiFgNfJQ=", "123"))
                 .setPayment(new Payment(100.0))
                 .setRecurring((new Recurring()).setAction("new")
@@ -805,6 +836,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
+    @Test
     void shouldDeleteCardOnFile() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -817,6 +849,7 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldDeleteConsumer() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -828,6 +861,7 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
+    @Test
     void shouldConsultTransaction() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -842,6 +876,7 @@ public class MaxiPagoTest {
         }
     }
 
+    @Test
     void shouldConsultOrder() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -856,6 +891,7 @@ public class MaxiPagoTest {
         }
     }
 
+    @Test
     void shouldConsultOrderList() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
