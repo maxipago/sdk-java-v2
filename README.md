@@ -222,7 +222,7 @@ maxiPago.sale()
                               .setLanguage("BR")
                               .setScreenHeight("550")
                               .setScreenWidth("550")
-                              .setTimeZoneOffset("3"))
+                              .setTimeZoneOffset("3"));
                 		  
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
