@@ -207,7 +207,7 @@ maxiPago.sale()
                         .setCountry("BR")
                         .setPhone("11111111111")
                         .setEmail("cliente@loja.com")
-                        .setAuthentication("41", Authentication.DECLINE)
+                        .setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE)
                         .setCreditCard(
                         (new Card()).setNumber("5221834791042066")
                         .setExpMonth("12")
