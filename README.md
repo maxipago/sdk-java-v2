@@ -148,9 +148,9 @@ maxiPago.auth()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("cliente@loja.com")
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
                         .setExpYear("2040")
                         .setCvvNumber("123"))
@@ -178,12 +178,12 @@ maxiPago.auth()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("cliente@loja.com")
         .setCreditCard(
-                (new Card()).setNumber("5221834791042066")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2030")
-                        .setCvvNumber("123"))
+                        .setExpYear("2040")
+                        .setCvvNumber("123")
         .setAuthentication("41", Authentication.DECLINE)
         .setPayment(new Payment(100.0));
 
@@ -206,7 +206,7 @@ maxiPago.sale()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("cliente@loja.com")
                         .setAuthentication("41", Authentication.DECLINE)
                         .setCreditCard(
                         (new Card()).setNumber("5221834791042066")
@@ -222,7 +222,7 @@ maxiPago.sale()
                               .setLanguage("BR")
                               .setScreenHeight("550")
                               .setScreenWidth("550")
-                              .setTimeZoneOffset("3")
+                              .setTimeZoneOffset("3"))
                 		  
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
@@ -240,7 +240,7 @@ maxiPago.capture()
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Cancelando a transaão
+#### Cancelando a transação
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
@@ -251,7 +251,7 @@ maxiPago.cancel()
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Verificando o cartão com uma transação zero dolar
+#### Verificando o cartão com uma transação Zero Dollar
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
@@ -260,10 +260,10 @@ maxiPago.zeroDollar()
         .setProcessorId("1")
         .setReferenceNum("123")
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
-                        .setCvvNumber("123"));
+                        .setExpYear("2040")
+                        .setCvvNumber("123"))
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
@@ -289,11 +289,11 @@ maxiPago.sale()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("cliente@loja.com")
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
@@ -322,9 +322,9 @@ maxiPago.sale()
                         .setEmail("cliente@loja.com"))
         .setAuthentication("41", Authentication.DECLINE)
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
@@ -357,9 +357,9 @@ maxiPago.sale()
                         .setEmail("cliente@loja.com"))
         .setAuthentication("41", Authentication.DECLINE)
         .setDebitCard(
-                (new Card()).setNumber("4000000000000002")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
@@ -425,9 +425,9 @@ maxiPago.auth()
                                 (new Document()).setDocumentType("CPF")
                                         .setDocumentValue("11111111111")))
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0))
         .addItem(1, "123", "Um item qualquer", 2, 10.0, 5.0)
@@ -495,9 +495,9 @@ maxiPago.sale()
                                 (new Document()).setDocumentType("CPF")
                                         .setDocumentValue("11111111111")))
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0))
         .addItem(1, "123", "Um item qualquer", 2, 10.0, 5.0)
