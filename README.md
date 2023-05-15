@@ -217,7 +217,7 @@ maxiPago.sale()
                          //device informations
                            .device(new Device()
                               .setColorDepth("1")
-                		      .setDeviceType3ds("BROWSER")]
+                              .setDeviceType3ds("BROWSER")]
                               .setJavaEnable("true")
                               .setLanguage("BR")
                               .setScreenHeight("550")
