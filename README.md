@@ -1,32 +1,29 @@
 # SDK-Java
 
-Esse SDK foi construído para abstrair e facilitar o processo de integração com a maxiPago! Smart Payments. Nesse momento
-o SDK oferece os seguintes recursos:
+Esse SDK foi construído para facilitar o processo de integração com o gateway maxipago. Atualmente 
+a SDK oferece os seguintes recursos:
 
 * Autorização
-* Autorização com autenticação - 3DS
-* Venda com autenticação - 3DS V2
 * Captura
 * Venda direta
 * Cancelamento
 * Estorno
 * Autorização com Antifraude
-* Verificação de cartão - 0 dolar
-* Venda direta com cartão de débito
+* Venda direta com Autenticação - 3DS V2 (cartão de crédito e débito)
+* Verificação de cartão - Zero Dollar
 * Boleto bancário
-* Transferência bancária
 * Cadastro, atualização e remoção de clientes
-    * Adição e remoção de cartões dos clientes
-* Consultas
+* Adição e remoção de cartões dos clientes
 
-Para acesso às documentações de todos os tipos de requisições disponíveis, acesse: [maxiPago! Developers](https://developers.maxipago.com/).
-Essa documentação descreverá os endpoints da API e os valores esperados. O SDK irá abstrair toda a complexidade da
+
+Para acesso as documentações de todos os tipos de requisições disponíveis, acesse: [maxiPago! Developers](https://developers.maxipago.com/).
+Essa documentação descreverá os endpoints da API e os valores esperados. A SDK irá abstrair toda a complexidade da
 criação dos XMLs, envio e recebimento das requisições, porém é importante que esteja com a documentação para saber os 
 valores esperados em cada requisição.
 
 ## Inicialização
 
-O SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
+A SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
 construtor da classe MaxiPago:
 
 ### Produção
@@ -79,7 +76,7 @@ A estrutura da classe é a seguinte:
 
 #### responseCode
 
-Você utilizar **apenas este campo** para validar o resultado de uma transação. Não utilize outros campos da resposta para determinar o sucesso ou falha de uma transação.
+Utilize **apenas este campo** para validar o resultado de uma transação. Não utilize outros campos da resposta para determinar o sucesso ou falha de uma transação.
 
 * 0 = Aprovada*
 * 1 = Negada
@@ -102,7 +99,7 @@ e débito, boleto, débito online e recorrências.
 ### Exemplos de requisições
 
 Os códigos de exemplo disponibilizados aqui, também estão disponíveis na suite de testes. Para utilizá-los, seja em
-sandbox, seja em produção, você precisará definir seu `merchantId` e `merchantKey`. Assim que tivé-os definidos,
+sandbox ou em produção, você precisará definir seu `merchantId` e `merchantKey`. Assim que os obter,
 basta criar uma instância de `Environment` com esses dados. A classe `Environment` possui dois métodos de criação:
 
 * `sandbox`
@@ -137,101 +134,31 @@ o SDK, basta usar o código abaixo:
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
 
-maxiPago.auth()
-        .setProcessorId("5")
-        .setReferenceNum("Teste 123")
-        .setIpAddress("127.0.0.1")
-        .billingAndShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
-                        .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
-                        .setPostalCode("11111111")
-                        .setCountry("BR")
-                        .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
-        .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
-                        .setExpMonth("12")
-                        .setExpYear("2028")
-                        .setCvvNumber("123"))
-        .setPayment(new Payment(100.0));
+        maxiPago.auth()
+			.setProcessorId("5")
+			.setReferenceNum("CreateAuth")
+			.setIpAddress("127.0.0.1")
+			.billingAndShipping((new Customer())
+					.setName("Nome como esta gravado no cartao")
+					.setAddress("Rua Volkswagen, 100")
+					.setAddress2("0")
+					.setDistrict("Jabaquara")
+					.setCity("Sao Paulo")
+					.setState("SP")
+					.setPostalCode("11111111")
+					.setCountry("BR")
+					.setPhone("11111111111")
+					.setEmail("email.pagador@gmail.com"))
+	        .setCreditCard((new Card())
+	        		.setNumber("5448280000000007")
+	        		.setExpMonth("12")
+	        		.setExpYear("2028")
+	        		.setCvvNumber("123"))
+	        .setPayment(new Payment(100.0));
 
 TransactionResponse response = maxiPago.transactionRequest().execute();
 ```
 
-#### Autorização com autenticação
-
-```java
-MaxiPago maxiPago = new MaxiPago(environment);
-
-maxiPago.auth()
-        .setProcessorId("5")
-        .setReferenceNum("Teste 123")
-        .setIpAddress("127.0.0.1")
-        .billingAndShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
-                        .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
-                        .setPostalCode("11111111")
-                        .setCountry("BR")
-                        .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
-        .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
-                        .setExpMonth("12")
-                        .setExpYear("2028")
-                        .setCvvNumber("123"))
-        .setAuthentication("41", Authentication.DECLINE)
-        .setPayment(new Payment(100.0));
-
-TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
-```
-#### Venda com 3DS 2.0
-```java
-MaxiPago maxiPago = new MaxiPago(environment);
-maxiPago.sale()
-        .setProcessorId("5")
-        .setReferenceNum("Teste 012")
-        .setIpAddress("127.0.0.1")
-        .billingAndShipping(
-        (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
-                        .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
-                        .setPostalCode("11111111")
-                        .setCountry("BR")
-                        .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
-                        .setAuthentication("41", Authentication.DECLINE)
-                        .setCreditCard(
-                        (new Card()).setNumber("5448280000000007")
-                        .setExpMonth("12")
-                        .setExpYear("2028")
-                        .setCvvNumber("123"))
-                        .setPayment(new Payment(100.0))
-                         //device informations
-                           .device(new Device()
-                		      .setDeviceType3ds("BROWSER")
-                		      .setSdkEncData("c2RrRW5jRGF0YQ==")
-                		      .setSdkAppId("17dd3e6f-20e5-452c-a638-f106ece38b7f")
-                		      .setSdkEphemeralPubKey("ai7q834kal0984545")
-                		      .setSdkMaxTimeout("05")
-                		      .setSdkReferenceNumber("17dd3e6f20e5452ca638f106ece38b7f")
-                		      .setSdkTransId("733aa357-285b-41ba-943e-a2c4569739fe")
-                		      .setRenderOptions(new RenderOptions()
-                				.setSdkInterface(SdkInterfaceEnum.NATIVE.value)
-                				.setSdkUiType(SdkUiTypeEnum.HTML_OTHER.value)));
-
-       TransactionResponse response =  maxiPago.transactionRequest().execute();
-```
 #### Capturando a pré-autorização
 
 ```java
@@ -245,7 +172,7 @@ maxiPago.capture()
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Cancelando a transaão
+#### Cancelando a transação
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
@@ -256,7 +183,7 @@ maxiPago.cancel()
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Verificando o cartão com uma transação zero dolar
+#### Verificando o cartão com uma transação Zero Dollar
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
@@ -265,10 +192,10 @@ maxiPago.zeroDollar()
         .setProcessorId("1")
         .setReferenceNum("123")
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
-                        .setCvvNumber("123"));
+                        .setExpYear("2040")
+                        .setCvvNumber("123"))
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
@@ -285,20 +212,20 @@ maxiPago.sale()
         .setReferenceNum("Teste 012")
         .setIpAddress("127.0.0.1")
         .billingAndShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("Seu Cliente")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
+                        .setEmail("email.pagador@gmail.com")
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
@@ -315,21 +242,21 @@ maxiPago.sale()
         .setReferenceNum("Teste 012")
         .setIpAddress("127.0.0.1")
         .billingAndShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("SNome como esta gravado no cartao")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
+                        .setEmail("email.pagador@gmail.com"))
         .setAuthentication("41", Authentication.DECLINE)
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
@@ -350,28 +277,28 @@ maxiPago.sale()
         .setReferenceNum("Teste 012")
         .setIpAddress("127.0.0.1")
         .billingAndShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("Nome como esta gravado no cartao")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal"))
+                        .setEmail("email.pagador@gmail.com"))
         .setAuthentication("41", Authentication.DECLINE)
         .setDebitCard(
-                (new Card()).setNumber("4000000000000002")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0));
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Criando uma autorização com anti-fraude
+#### Criando uma autorização com antifraude
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
@@ -382,17 +309,17 @@ maxiPago.auth()
         .setIpAddress("127.0.0.1")
         .setFraudCheck("Y")
         .setBilling(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("Nome como esta gravado no cartao")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setCompanyName("Uma empresa qualquer")
-                        .setEmail("fulano@de.tal")
+                        .setCompanyName("Nome da Empresa")
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -410,16 +337,16 @@ maxiPago.auth()
                                         .setDocumentValue("11111111111")))
 
         .setShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("Seu Cliente")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal")
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -430,9 +357,9 @@ maxiPago.auth()
                                 (new Document()).setDocumentType("CPF")
                                         .setDocumentValue("11111111111")))
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0))
         .addItem(1, "123", "Um item qualquer", 2, 10.0, 5.0)
@@ -441,7 +368,7 @@ maxiPago.auth()
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
 ```
 
-#### Criando uma venda com cartão de débito e anti-fraude
+#### Criando uma venda com cartão de débito e antifraude
 
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
@@ -452,17 +379,17 @@ maxiPago.sale()
         .setIpAddress("127.0.0.1")
         .setFraudCheck("Y")
         .setBilling(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("Nome como esta gravado no cartao")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setCompanyName("Uma empresa qualquer")
-                        .setEmail("fulano@de.tal")
+                        .setCompanyName("Nome da Empresa")
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -480,16 +407,16 @@ maxiPago.sale()
                                         .setDocumentValue("11111111111")))
 
         .setShipping(
-                (new Customer()).setName("Fulano de Tal")
-                        .setAddress("Rua dos bobos")
+                (new Customer()).setName("Seu Cliente")
+                        .setAddress("Rua Volkswagen 100")
                         .setAddress2("0")
-                        .setDistrict("District")
-                        .setCity("Cidade")
-                        .setState("Estado")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("fulano@de.tal")
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -500,13 +427,67 @@ maxiPago.sale()
                                 (new Document()).setDocumentType("CPF")
                                         .setDocumentValue("11111111111")))
         .setCreditCard(
-                (new Card()).setNumber("5105105105105100")
+                (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
-                        .setExpYear("2028")
+                        .setExpYear("2040")
                         .setCvvNumber("123"))
         .setPayment(new Payment(100.0))
         .addItem(1, "123", "Um item qualquer", 2, 10.0, 5.0)
         .addItem(2, "456", "Outro item qualquer", 2, 10.0, 5.0);
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
+```
+
+#### Venda direta com Autenticação 3DS V2 (cartão de crédito e débito)
+```java
+MaxiPago maxiPago = new MaxiPago(environment);
+
+maxiPago.sale()
+	.setProcessorId("5")
+	.setReferenceNum("CreateSaleWith3DS")
+	.setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE)
+	.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
+	.device(new Device()
+			.setColorDepth("1")
+			.setJavaEnabled(true)
+			.setLanguage("BR")
+			.setScreenHeight("550")
+			.setScreenWidth("550")
+			.setTimeZoneOffset(3))
+	.setIpAddress("127.0.0.1")
+	.billingAndShipping((new Customer())
+			.setName("Nome como esta gravado no cartao")
+			.setAddress("Rua Volkswagen 100")
+			.setAddress2("0")
+			.setDistrict("Jabaquara")
+			.setCity("Sao Paulo")
+			.setState("SP")
+			.setPostalCode("11111111")
+			.setCountry("BR")
+			.setPhone("11111111111")
+			.setEmail("email.pagador@gmail.com"))
+	.setCreditCard((new Card())
+			.setNumber("5221834791042066")
+			.setExpMonth("12")
+			.setExpYear("2030")
+			.setCvvNumber("123"))
+	.setPayment(new Payment(100.0));
+                		  
+
+       TransactionResponse response =  maxiPago.transactionRequest().execute();
+```
+
+#### Criando um Pix
+```java
+MaxiPago maxiPago = new MaxiPago(environment);
+maxiPago.pix()
+	.setProcessorId("205")
+	.setReferenceNum("CreatePix")
+	.setIpAddress("127.0.0.1")
+	.setPayment(new Payment(20.00))
+	.setPix((new Pix())
+		.setExpirationTime(86400) // 1 dia
+		.setPaymentInfo("Uma informação sobre o pagamento")
+		.addInfo("Info adicional", "R$ 20,00"));
+
 ```
