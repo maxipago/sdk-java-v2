@@ -134,100 +134,31 @@ o SDK, basta usar o código abaixo:
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);
 
-maxiPago.auth()
-        .setProcessorId("5")
-        .setReferenceNum("Teste 123")
-        .setIpAddress("127.0.0.1")
-        .billingAndShipping(
-                (new Customer()).setName("Nome como esta gravado no cartao")
-                        .setAddress("Rua Volkswagen 100")
-                        .setAddress2("0")
-                        .setDistrict("Jabaquara")
-                        .setCity("Sao Paulo")
-                        .setState("SP")
-                        .setPostalCode("11111111")
-                        .setCountry("BR")
-                        .setPhone("11111111111")
-                        .setEmail("cliente@loja.com")
-        .setCreditCard(
-                (new Card()).setNumber("3550464082005915")
-                        .setExpMonth("12")
-                        .setExpYear("2040")
-                        .setCvvNumber("123"))
-        .setPayment(new Payment(100.0));
+        maxiPago.auth()
+			.setProcessorId("5")
+			.setReferenceNum("CreateAuth")
+			.setIpAddress("127.0.0.1")
+			.billingAndShipping((new Customer())
+					.setName("Nome como esta gravado no cartao")
+					.setAddress("Rua Volkswagen, 100")
+					.setAddress2("0")
+					.setDistrict("Jabaquara")
+					.setCity("Sao Paulo")
+					.setState("SP")
+					.setPostalCode("11111111")
+					.setCountry("BR")
+					.setPhone("11111111111")
+					.setEmail("email.pagador@gmail.com"))
+	        .setCreditCard((new Card())
+	        		.setNumber("5448280000000007")
+	        		.setExpMonth("12")
+	        		.setExpYear("2028")
+	        		.setCvvNumber("123"))
+	        .setPayment(new Payment(100.0));
 
 TransactionResponse response = maxiPago.transactionRequest().execute();
 ```
 
-#### Autorização com autenticação
-
-```java
-MaxiPago maxiPago = new MaxiPago(environment);
-
-maxiPago.auth()
-        .setProcessorId("5")
-        .setReferenceNum("Teste 123")
-        .setIpAddress("127.0.0.1")
-        .billingAndShipping(
-                (new Customer()).setName("Nome como esta gravado no cartao")
-                        .setAddress("Rua Volkswagen 100")
-                        .setAddress2("0")
-                        .setDistrict("Jabaquara")
-                        .setCity("Sao Paulo")
-                        .setState("SP")
-                        .setPostalCode("11111111")
-                        .setCountry("BR")
-                        .setPhone("11111111111")
-                        .setEmail("cliente@loja.com")
-        .setCreditCard(
-                (new Card()).setNumber("3550464082005915")
-                        .setExpMonth("12")
-                        .setExpYear("2040")
-                        .setCvvNumber("123")
-        .setAuthentication("41", Authentication.DECLINE)
-        .setPayment(new Payment(100.0));
-
-TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
-```
-#### Venda direta com Autenticação 3DS V2 (cartão de crédito e débito)
-```java
-MaxiPago maxiPago = new MaxiPago(environment);
-maxiPago.sale()
-        .setProcessorId("5")
-        .setReferenceNum("Teste 012")
-        .setIpAddress("127.0.0.1")
-        .billingAndShipping((new Customer())
-                        .setName("Nome como esta gravado no cartao")
-                        .setAddress("Rua Volkswagen 100")
-                        .setAddress2("0")
-                        .setDistrict("Jabaquara")
-                        .setCity("Sao Paulo")
-                        .setState("SP")
-                        .setPostalCode("11111111")
-                        .setCountry("BR")
-                        .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
-        .setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE)
-        .setCreditCard((new Card())
-                        .setNumber("5221834791042066")
-                        .setExpMonth("12")
-                        .setExpYear("2030")
-                        .setCvvNumber("123"))
-        .setPayment(new Payment(100.0))
-        .setSoftDescriptor("MP")
-        .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
-        .device(new Device())
-        .setDeviceType3ds("BROWSER")
-        .setColorDepth("1")
-        .setJavaEnable("true")
-        .setLanguage("BR")
-        .setScreenHeight("550")
-        .setScreenWidth("550")
-        .setTimeZoneOffset("3"));
-                		  
-
-       TransactionResponse response =  maxiPago.transactionRequest().execute();
-```
 #### Capturando a pré-autorização
 
 ```java
@@ -290,7 +221,7 @@ maxiPago.sale()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com")
+                        .setEmail("email.pagador@gmail.com")
         .setCreditCard(
                 (new Card()).setNumber("3550464082005915")
                         .setExpMonth("12")
@@ -320,7 +251,7 @@ maxiPago.sale()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("email.pagador@gmail.com"))
         .setAuthentication("41", Authentication.DECLINE)
         .setCreditCard(
                 (new Card()).setNumber("3550464082005915")
@@ -355,7 +286,7 @@ maxiPago.sale()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("email.pagador@gmail.com"))
         .setAuthentication("41", Authentication.DECLINE)
         .setDebitCard(
                 (new Card()).setNumber("3550464082005915")
@@ -388,7 +319,7 @@ maxiPago.auth()
                         .setCountry("BR")
                         .setPhone("11111111111")
                         .setCompanyName("Nome da Empresa")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -415,7 +346,7 @@ maxiPago.auth()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -458,7 +389,7 @@ maxiPago.sale()
                         .setCountry("BR")
                         .setPhone("11111111111")
                         .setCompanyName("Nome da Empresa")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -485,7 +416,7 @@ maxiPago.sale()
                         .setPostalCode("11111111")
                         .setCountry("BR")
                         .setPhone("11111111111")
-                        .setEmail("cliente@loja.com"))
+                        .setEmail("email.pagador@gmail.com"))
                         .addPhone(
                                 (new Phone()).setPhoneCountryCode("55")
                                         .setPhoneAreaCode("16")
@@ -505,4 +436,59 @@ maxiPago.sale()
         .addItem(2, "456", "Outro item qualquer", 2, 10.0, 5.0);
 
 TransactionResponse transactionResponse = maxiPago.transactionRequest().execute();
+```
+
+#### Venda direta com Autenticação 3DS V2 (cartão de crédito e débito)
+```java
+MaxiPago maxiPago = new MaxiPago(environment);
+maxiPago.sale()
+        .setProcessorId("5")
+        .setReferenceNum("Teste 012")
+        .setIpAddress("127.0.0.1")
+        .billingAndShipping((new Customer())
+                        .setName("Nome como esta gravado no cartao")
+                        .setAddress("Rua Volkswagen 100")
+                        .setAddress2("0")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
+                        .setPostalCode("11111111")
+                        .setCountry("BR")
+                        .setPhone("11111111111")
+                        .setEmail("email.pagador@gmail.com"))
+        .setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE)
+        .setCreditCard((new Card())
+                        .setNumber("5221834791042066")
+                        .setExpMonth("12")
+                        .setExpYear("2030")
+                        .setCvvNumber("123"))
+        .setPayment(new Payment(100.0))
+        .setSoftDescriptor("MP")
+        .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
+        .device(new Device())
+        .setDeviceType3ds("BROWSER")
+        .setColorDepth("1")
+        .setJavaEnable("true")
+        .setLanguage("BR")
+        .setScreenHeight("550")
+        .setScreenWidth("550")
+        .setTimeZoneOffset("3"));
+                		  
+
+       TransactionResponse response =  maxiPago.transactionRequest().execute();
+```
+
+#### Criando um Pix
+```java
+MaxiPago maxiPago = new MaxiPago(environment);
+maxiPago.pix()
+	.setProcessorId("205")
+	.setReferenceNum("CreatePix")
+	.setIpAddress("127.0.0.1")
+	.setPayment(new Payment(20.00))
+	.setPix((new Pix())
+		.setExpirationTime(86400) // 1 dia
+		.setPaymentInfo("Uma informação sobre o pagamento")
+		.addInfo("Info adicional", "R$ 20,00"));
+
 ```

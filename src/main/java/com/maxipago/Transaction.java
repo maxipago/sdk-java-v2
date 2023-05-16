@@ -1,5 +1,6 @@
 package com.maxipago;
 
+import com.maxipago.enums.ChallengePreference;
 import com.maxipago.paymentmethod.*;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -100,7 +101,11 @@ public class Transaction {
 
     public Transaction setAuthentication(String mpiProcessorID, String onFailure) {
         this.authentication = new Authentication(mpiProcessorID, onFailure);
-
+        return this;
+    }
+    
+    public Transaction setAuthentication(String mpiProcessorID, String onFailure, ChallengePreference challengePreference) {
+        this.authentication = new Authentication(mpiProcessorID, onFailure, challengePreference);
         return this;
     }
 
@@ -224,6 +229,11 @@ public class Transaction {
 
     public Transaction setRecurring(Recurring recurring) {
         this.recurring = recurring;
+        return this;
+    }
+    
+    public Transaction setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
         return this;
     }
 }
