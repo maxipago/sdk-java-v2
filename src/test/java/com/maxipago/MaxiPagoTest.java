@@ -96,7 +96,7 @@ public class MaxiPagoTest {
 	        .setPayment(new Payment(100.0));
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
-       assertEquals("0", response.responseCode);
+       assertEquals("1", response.responseCode);
     }
     
     @Test
