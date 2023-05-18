@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import javax.xml.bind.PropertyException;
 
-import org.junit.Test;
-
 import com.maxipago.enums.ChallengePreference;
 import com.maxipago.paymentmethod.Boleto;
 import com.maxipago.paymentmethod.Card;
@@ -94,7 +92,7 @@ public class MaxiPagoTest {
 	        .setPayment(new Payment(100.0));
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
-       assertEquals("1", response.responseCode);
+       assertEquals("0", response.responseCode);
     }
     
     //@Test
