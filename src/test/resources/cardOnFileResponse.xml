@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<transaction-response>
+	<authCode>038567</authCode>
+	<orderID>0A0115EA:018830425188:2E36:29EB856E</orderID>
+	<referenceNum>125222</referenceNum>
+	<transactionID>549672510</transactionID>
+	<transactionTimestamp>1684436832</transactionTimestamp>
+	<responseCode>0</responseCode>
+	<responseMessage>CAPTURED</responseMessage>
+	<avsResponseCode/>
+	<cvvResponseCode/>
+	<processorCode>00</processorCode>
+	<processorMessage>Success.</processorMessage>
+	<processorName>REDE</processorName>
+	<creditCardBin>548985</creditCardBin>
+	<creditCardLast4>8247</creditCardLast4>
+	<errorMessage/>
+	<processorTransactionID>11172305181605018765</processorTransactionID>
+	<processorReferenceNumber>505901098</processorReferenceNumber>
+	<creditCardScheme>Mastercard</creditCardScheme>
+	<save-on-file>
+		<token>E6XABCV5+ZnTy44saWxL0Q==</token>
+		<creditCardNumber>****************</creditCardNumber>
+	</save-on-file>
+</transaction-response>

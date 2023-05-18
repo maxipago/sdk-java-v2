@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction-response>
+	<authCode>097600</authCode>
+	<orderID>0A011599:0198765232DE:5F04:57DF15FA</orderID>
+	<referenceNum>2023051816009876</referenceNum>
+	<transactionID>549609876</transactionID>
+	<transactionTimestamp>1684409876</transactionTimestamp>
+	<responseCode>0</responseCode>
+	<responseMessage>CAPTURED</responseMessage>
+	<avsResponseCode/>
+	<cvvResponseCode/>
+	<processorCode>00</processorCode>
+	<processorMessage>Success.</processorMessage>
+	<processorName>REDE</processorName>
+	<creditCardBin>530033</creditCardBin>
+	<creditCardLast4>9799</creditCardLast4>
+	<errorMessage/>
+	<processorTransactionID>09876305181605013679</processorTransactionID>
+	<processorReferenceNumber>098764085</processorReferenceNumber>
+	<fraudScore>28.77</fraudScore>
+	<creditCardScheme>Mastercard</creditCardScheme>
+	<brandCode>00</brandCode>
+	<brandMessage>Success.</brandMessage>
+	<brandTransactionID>MCGILUMJX2345</brandTransactionID>
+</transaction-response>
