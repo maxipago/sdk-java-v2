@@ -1,7 +1,6 @@
 package com.maxipago;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 public class Environment {
     private static final String SANDBOX = "https://testapi.maxipago.net";
@@ -45,6 +44,12 @@ public class Environment {
         if (!production) {
             this.apiURL = Environment.SANDBOX;
         }
+    }
+    
+    public Environment(String merchantId, String merchantKey, String apiURL) {
+        this.merchantId = merchantId;
+        this.merchantKey = merchantKey;
+        this.apiURL = apiURL;
     }
 
     public static Environment sandbox(String merchantId, String merchantKey) {

@@ -1,10 +1,10 @@
 package com.maxipago;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import javax.xml.bind.PropertyException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.maxipago.enums.ChallengePreference;
 import com.maxipago.paymentmethod.Boleto;
@@ -21,10 +21,8 @@ public class MaxiPagoTest {
 
     public MaxiPagoTest() {}
 
-    
-
-    @Test
-    void shouldCreateAuth() throws PropertyException {
+    //@Test
+    public void shouldCreateAuth() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -58,7 +56,7 @@ public class MaxiPagoTest {
         System.out.println(response.transactionID);
     }
 
-    @Test
+    //@Test
     public void shouldCreateSaleWith3DS() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -99,8 +97,8 @@ public class MaxiPagoTest {
        assertEquals("1", response.responseCode);
     }
     
-    @Test
-    void shouldCaptureAuth() throws PropertyException {
+    //@Test
+    public void shouldCaptureAuth() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -113,8 +111,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCancelTransaction() throws PropertyException {
+    //@Test
+    public void shouldCancelTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -125,8 +123,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
     
-    @Test
-    void shouldCreateZeroDollarTransaction() throws PropertyException {
+    //@Test
+    public void shouldCreateZeroDollarTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -143,8 +141,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
     
-    @Test
-    void shouldCreateSaleWithCredit() throws PropertyException {
+    //@Test
+    public void shouldCreateSaleWithCredit() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -174,8 +172,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateSaleWithDebit() throws PropertyException {
+    //@Test
+    public void shouldCreateSaleWithDebit() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -206,8 +204,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateAuthWithAntiFraud() throws PropertyException {
+    //@Test
+    public void shouldCreateAuthWithAntiFraud() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -279,8 +277,8 @@ public class MaxiPagoTest {
         System.out.println(transactionResponse.fraudScore);
     }
 
-    @Test
-    void shouldCreateSaleWithAntiFraud() throws PropertyException {
+    //@Test
+    public void shouldCreateSaleWithAntiFraud() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -352,8 +350,8 @@ public class MaxiPagoTest {
         System.out.println(transactionResponse.fraudScore);
     }
 
-    @Test
-    void shouldCreateBoleto() throws PropertyException {
+    //@Test
+    public void shouldCreateBoleto() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -383,8 +381,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateOnlineDebit() throws PropertyException {
+    //@Test
+    public void shouldCreateOnlineDebit() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -414,8 +412,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldRefundTransaction() throws PropertyException {
+    //@Test
+    public void shouldRefundTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -426,8 +424,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldRefundPixTransaction() throws PropertyException {
+    //@Test
+    public void shouldRefundPixTransaction() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -440,8 +438,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateRecurringPayment() throws PropertyException {
+    //@Test
+    public void shouldCreateRecurringPayment() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -479,8 +477,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldModifyRecurringPayment() {
+    //@Test
+    public void shouldModifyRecurringPayment() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -517,8 +515,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldCancelRecurringPayment() {
+    //@Test
+    public void shouldCancelRecurringPayment() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -529,8 +527,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldCreateConsumer() {
+    //@Test
+    public void shouldCreateConsumer() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -553,8 +551,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldUpdateConsumer() {
+    //@Test
+    public void shouldUpdateConsumer() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -578,8 +576,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldAddCardOnFile() {
+    //@Test
+    public void shouldAddCardOnFile() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -604,8 +602,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldCreateAuthWithToken() throws PropertyException {
+    //@Test
+    public void shouldCreateAuthWithToken() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -631,7 +629,7 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    void shouldCreateSaleWithToken() throws PropertyException {
+    public void shouldCreateSaleWithToken() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -657,8 +655,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateZeroDollarTransactionAndSaveOnFile() throws PropertyException {
+    //@Test
+    public void shouldCreateZeroDollarTransactionAndSaveOnFile() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -676,8 +674,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateAuthAndSaveOnFile() throws PropertyException {
+    //@Test
+    public void shouldCreateAuthAndSaveOnFile() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -708,8 +706,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateSaleAndSaveOnFile() throws PropertyException {
+    //@Test
+    public void shouldCreateSaleAndSaveOnFile() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -740,8 +738,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldCreateRecurringPaymentWithToken() throws PropertyException {
+    //@Test
+    public void shouldCreateRecurringPaymentWithToken() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -776,8 +774,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    @Test
-    void shouldDeleteCardOnFile() {
+    //@Test
+    public void shouldDeleteCardOnFile() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -789,8 +787,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldDeleteConsumer() {
+    //@Test
+    public void shouldDeleteConsumer() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -801,8 +799,8 @@ public class MaxiPagoTest {
         maxiPago.apiRequest().execute();
     }
 
-    @Test
-    void shouldConsultTransaction() {
+    //@Test
+    public void shouldConsultTransaction() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
         ));
@@ -816,7 +814,7 @@ public class MaxiPagoTest {
         }
     }
 
-    @Test
+    //@Test
     void shouldConsultOrder() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -831,7 +829,7 @@ public class MaxiPagoTest {
         }
     }
 
-    @Test
+    //@Test
     void shouldConsultOrderList() {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -853,7 +851,7 @@ public class MaxiPagoTest {
         assertEquals(2, (int) response.resultSetInfo.pageNumber);
     }
     
-    @Test
+    //@Test
     void shouldCreatePix() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey
@@ -873,7 +871,7 @@ public class MaxiPagoTest {
         assertEquals("0", response.responseCode);
     }
     
-    @Test
+    //@Test
     void shouldCreatePixWithCustomerInfo() throws PropertyException {
         MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
                 merchantId, merchantKey

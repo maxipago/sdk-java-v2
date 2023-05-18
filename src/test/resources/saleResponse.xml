@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction-response>
+	<authCode/>
+	<orderID>0A014569:01982GD14986:81U6:03618736</orderID>
+	<referenceNum>2023015243013635</referenceNum>
+	<transactionID>549601674</transactionID>
+	<transactionTimestamp>1684429425</transactionTimestamp>
+	<responseCode>1</responseCode>
+	<responseMessage>DECLINED</responseMessage>
+	<avsResponseCode/>
+	<cvvResponseCode/>
+	<processorCode>58</processorCode>
+	<processorMessage>Unauthorized. Contact issuer.</processorMessage>
+	<processorName>REDE</processorName>
+	<creditCardBin>515601</creditCardBin>
+	<creditCardLast4>4629</creditCardLast4>
+	<errorMessage/>
+	<processorTransactionID>11104875181401493322</processorTransactionID>
+	<processorReferenceNumber>804756127</processorReferenceNumber>
+	<creditCardScheme>Mastercard</creditCardScheme>
+	<brandCode>83</brandCode>
+	<brandMessage>Fraud or security (Mastercard use only)</brandMessage>
+	<brandTransactionID>MPLN16FPG8594</brandTransactionID>
+	<brandMac>01</brandMac>
+</transaction-response>
