@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.1] - 17/MAI/2023
+## [2.1.0] - 18/MAI/2023
 ### Changed
 - Inclusão dos campos ABECS
 
