@@ -57,4 +57,8 @@ public class Record {
     public String processorTransactionID;
     public String processorReferenceNumber;
     public String recurringInstallment;
+    public String brandCode;
+    public String brandMessage;
+    public String brandTransactionID;
+    public String brandMac;
 }

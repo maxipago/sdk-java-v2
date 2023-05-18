@@ -1,21 +1,5 @@
 package com.maxipago.request;
 
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-
 public class TransactionResponse {
     public String authCode;
     public String orderID;
@@ -41,4 +25,8 @@ public class TransactionResponse {
     public String boletoUrl;
     public String emv;
     public String imagem_base64;
+    public String brandCode;
+    public String brandMessage;
+    public String brandTransactionID;
+    public String brandMac;
 }

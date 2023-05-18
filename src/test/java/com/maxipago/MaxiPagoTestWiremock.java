@@ -1,11 +1,25 @@
 package com.maxipago;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.any;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.PropertyException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.maxipago.enums.ChallengePreference;
 import com.maxipago.paymentmethod.Boleto;
 import com.maxipago.paymentmethod.Card;
@@ -15,54 +29,26 @@ import com.maxipago.paymentmethod.Token;
 import com.maxipago.request.RApiResponse;
 import com.maxipago.request.TransactionResponse;
 
-public class MaxiPagoTest {
+
+@RunWith(MockitoJUnitRunner.class)
+public class MaxiPagoTestWiremock {
     String merchantId = "11631";
     String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
+    private static String CAPTURED_RESPONSE="capturedResponse.xml";
+    private static String RAPI_RESPONSE="rapiResponse.xml";
+    private static String CARDONFILE_RESPONSE="cardOnFileResponse.xml";
+    private static String SALE_DECLINED_RESPONSE="saleDeclinedResponse.xml";
+    private static String UNIVERSAL_API="/UniversalAPI/postXML";
+    private static String REPORTS_API="/ReportsAPI/servlet/ReportsAPI";
 
-    public MaxiPagoTest() {}
-
+    @Rule
+	public WireMockRule wireMockRule = new WireMockRule(8080);
+    @Mock
+	public HttpServletRequest request;
     
-
-    @Test
-    void shouldCreateAuth() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
-
-        maxiPago.auth()
-        	.setProcessorId("5")
-			.setReferenceNum("CreateAuth")
-			.setIpAddress("127.0.0.1")
-			.billingAndShipping((new Customer())
-					.setName("Nome como esta gravado no cartao")
-					.setAddress("Rua Volkswagen, 100")
-					.setAddress2("0")
-					.setDistrict("Jabaquara")
-					.setCity("Sao Paulo")
-					.setState("SP")
-					.setPostalCode("11111111")
-					.setCountry("BR")
-					.setPhone("11111111111")
-					.setEmail("email.pagador@gmail.com"))
-	        .setCreditCard((new Card())
-	        		.setNumber("5448280000000007")
-	        		.setExpMonth("12")
-	        		.setExpYear("2028")
-	        		.setCvvNumber("123"))
-	        .setPayment(new Payment(100.0));
-
-        TransactionResponse response = maxiPago.transactionRequest().execute();
-
-        System.out.println(response.processorCode);
-        System.out.println(response.orderID);
-        System.out.println(response.transactionID);
-    }
-
     @Test
     public void shouldCreateSaleWith3DS() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
         	.setProcessorId("5")
@@ -100,10 +86,8 @@ public class MaxiPagoTest {
     }
     
     @Test
-    void shouldCaptureAuth() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCaptureAuth() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.capture()
                 .setOrderId("0A010492:0172EB977CBC:8CDA:22FB4887")
@@ -114,10 +98,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCancelTransaction() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCancelTransaction() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.cancel()
                 .setTransactionId("9044089");
@@ -126,10 +108,8 @@ public class MaxiPagoTest {
     }
     
     @Test
-    void shouldCreateZeroDollarTransaction() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateZeroDollarTransaction() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.zeroDollar()
                 .setProcessorId("1")
@@ -144,10 +124,8 @@ public class MaxiPagoTest {
     }
     
     @Test
-    void shouldCreateSaleWithCredit() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateSaleWithCredit() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -175,10 +153,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateSaleWithDebit() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateSaleWithDebit() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("1")
@@ -207,10 +183,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateAuthWithAntiFraud() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateAuthWithAntiFraud() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
                 .setProcessorId("5")
@@ -280,10 +254,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateSaleWithAntiFraud() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateSaleWithAntiFraud() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -353,10 +325,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateBoleto() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateBoleto() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.boleto()
                 .setProcessorId("12")
@@ -384,10 +354,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateOnlineDebit() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateOnlineDebit() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         // 17 - BRADESCO
         // 18 - ITAU
@@ -415,10 +383,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldRefundTransaction() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldRefundTransaction() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.refund()
                 .setTransactionId("9044118");
@@ -427,10 +393,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldRefundPixTransaction() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldRefundPixTransaction() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.pixRefund()
                 .setOrderId("0123")
@@ -441,10 +405,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateRecurringPayment() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateRecurringPayment() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.recurringPayment()
                 .setProcessorId("5")
@@ -480,10 +442,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldModifyRecurringPayment() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldModifyRecurringPayment() {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.modifyRecurring()
                 .setOrderId("0A01048D:01717A02CF80:7FC7:5639916D")
@@ -518,10 +478,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCancelRecurringPayment() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCancelRecurringPayment() {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.cancelRecurring()
                 .setOrderId("0A01048D:01717A02CF80:7FC7:5639916D");
@@ -530,10 +488,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateConsumer() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateConsumer() {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.addConsumer()
                 .setCustomerIdExt("123")
@@ -554,10 +510,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldUpdateConsumer() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldUpdateConsumer() {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.updateConsumer()
                 .setCustomerId("3039749")
@@ -579,10 +533,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldAddCardOnFile() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldAddCardOnFile() {
+    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.addCardOnFile()
                 .setCustomerId("3039749")
@@ -605,10 +557,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateAuthWithToken() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateAuthWithToken() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
                 .setProcessorId("5")
@@ -631,10 +581,8 @@ public class MaxiPagoTest {
         maxiPago.transactionRequest().execute();
     }
 
-    void shouldCreateSaleWithToken() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateSaleWithToken() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -658,10 +606,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateZeroDollarTransactionAndSaveOnFile() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateZeroDollarTransactionAndSaveOnFile() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.zeroDollar()
                 .setProcessorId("5")
@@ -677,10 +623,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateAuthAndSaveOnFile() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateAuthAndSaveOnFile() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
                 .setProcessorId("5")
@@ -709,10 +653,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateSaleAndSaveOnFile() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateSaleAndSaveOnFile() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -741,10 +683,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldCreateRecurringPaymentWithToken() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreateRecurringPaymentWithToken() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.recurringPayment()
                 .setProcessorId("5")
@@ -777,10 +717,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldDeleteCardOnFile() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldDeleteCardOnFile() {
+    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.deleteCardOnFile()
                 .setCustomerId("3039749")
@@ -790,10 +728,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldDeleteConsumer() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldDeleteConsumer() {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.deleteConsumer()
                 .setCustomerId("3039749");
@@ -802,10 +738,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldConsultTransaction() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldConsultTransaction() {
+    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
         maxiPago.consultTransaction("8704233");
 
@@ -817,25 +751,8 @@ public class MaxiPagoTest {
     }
 
     @Test
-    void shouldConsultOrder() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
-
-        maxiPago.consultOrder("0A0104BA:017270E43DE2:ACBF:0B4E365C");
-
-        RApiResponse response = maxiPago.rapiRequest().execute();
-
-        for (Record record : response.records) {
-            System.out.println(record.orderId);
-        }
-    }
-
-    @Test
-    void shouldConsultOrderList() {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldConsultOrderList() {
+    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
         maxiPago.consultOrderList("lastmonth")
                 .setPageSize(5)
@@ -850,14 +767,12 @@ public class MaxiPagoTest {
 
         response = maxiPago.rapiRequest().execute();
 
-        assertEquals(2, (int) response.resultSetInfo.pageNumber);
+        assertEquals(1, (int) response.resultSetInfo.pageNumber);
     }
     
     @Test
-    void shouldCreatePix() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreatePix() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.pix()
                 .setProcessorId("205")
@@ -874,10 +789,8 @@ public class MaxiPagoTest {
     }
     
     @Test
-    void shouldCreatePixWithCustomerInfo() throws PropertyException {
-        MaxiPago maxiPago = new MaxiPago(Environment.sandbox(
-                merchantId, merchantKey
-        ));
+    public void shouldCreatePixWithCustomerInfo() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.pix()
                 .setProcessorId("205")
@@ -896,4 +809,91 @@ public class MaxiPagoTest {
         TransactionResponse response = maxiPago.transactionRequest().execute();
         assertEquals("0", response.responseCode);
     }
+
+    @Test
+    public void shouldCreateAuth() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(SALE_DECLINED_RESPONSE, UNIVERSAL_API);
+
+        maxiPago.auth()
+        	.setProcessorId("5")
+			.setReferenceNum("CreateAuth")
+			.setIpAddress("127.0.0.1")
+			.billingAndShipping((new Customer())
+					.setName("Nome como esta gravado no cartao")
+					.setAddress("Rua Volkswagen, 100")
+					.setAddress2("0")
+					.setDistrict("Jabaquara")
+					.setCity("Sao Paulo")
+					.setState("SP")
+					.setPostalCode("11111111")
+					.setCountry("BR")
+					.setPhone("11111111111")
+					.setEmail("email.pagador@gmail.com"))
+	        .setCreditCard((new Card())
+	        		.setNumber("5448280000000007")
+	        		.setExpMonth("12")
+	        		.setExpYear("2028")
+	        		.setCvvNumber("123"))
+	        .setPayment(new Payment(100.0));
+
+        TransactionResponse response = maxiPago.transactionRequest().execute();
+        
+        assertEquals("01", response.brandMac);
+        assertEquals("83", response.brandCode);
+        assertEquals("Fraud or security (Mastercard use only)", response.brandMessage);
+        assertEquals("MPLN16FPG8594", response.brandTransactionID);
+        
+    }
+    
+    @Test
+    public void shouldConsultOrder() {
+    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+        
+        maxiPago.consultOrder("0A0104BA:017270E43DE2:ACBF:0B4E365C");
+
+        RApiResponse response = maxiPago.rapiRequest().execute();
+
+        for (Record record : response.records) {
+        	if (record.transactionId!=null && "549470346".equals(record.transactionId) )
+            {
+        		assertEquals("00", record.brandCode);
+        		assertEquals("Success.", record.brandMessage);
+        		assertEquals("MPLMMHZV76543", record.brandTransactionID);
+        		assertEquals("01", record.brandMac);
+            }
+        }
+    }
+    
+    private String getXMLContextToParse(String strfile) {
+		StringBuilder xmlData = new StringBuilder();
+		try {
+			File file = new File(strfile);
+
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String dataRead = reader.readLine();
+
+			while (dataRead != null) {
+				xmlData.append(dataRead);
+				dataRead = reader.readLine();
+			}
+			
+			reader.close();
+		} catch (Exception e) {
+			// e.printStackTrace();
+		}
+		return xmlData.toString();
+	}
+    
+    private MaxiPago prepareResponse(String file, String path) {
+		MaxiPago maxiPago = new MaxiPago(new Environment(merchantId, merchantKey, "http://localhost:8080"));
+    	
+    	String responseXML = getXMLContextToParse("src/test/resources/"+file);
+        
+        stubFor(any(urlPathMatching(path))
+				  .willReturn(aResponse()
+				  .withStatus(200)
+				  .withHeader("Content-Type", "application/xml")
+				  .withBody(responseXML)));
+		return maxiPago;
+	}
 }
