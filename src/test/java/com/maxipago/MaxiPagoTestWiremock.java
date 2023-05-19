@@ -179,7 +179,8 @@ public class MaxiPagoTestWiremock {
                                 .setTokenCryptogram("abc1238759uiokjflahdfkjlahs"))
                 .setPayment(new Payment(100.0));
 
-        maxiPago.transactionRequest().execute();
+        TransactionResponse response = maxiPago.transactionRequest().execute();
+        assertEquals("0", response.responseCode);
     }
 
     @Test
