@@ -19,6 +19,14 @@ public class Card {
 
     @XmlElement(name = "cvvNumber")
     private String cvvNumber;
+    
+    @XmlElement(name = "tokenCryptogram")
+    private String tokenCryptogram;
+
+    public Card setTokenCryptogram(String tokenCryptogram) {
+        this.tokenCryptogram = tokenCryptogram;
+        return this;
+    }
 
     public Card setNumber(String number) {
         this.number = number;

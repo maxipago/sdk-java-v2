@@ -151,6 +151,36 @@ public class MaxiPagoTestWiremock {
 
         maxiPago.transactionRequest().execute();
     }
+    
+    @Test
+    public void shouldCreateSaleWithTokenCryptogram() throws PropertyException {
+    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+
+        maxiPago.sale()
+                .setProcessorId("5")
+                .setReferenceNum("Teste 012")
+                .setIpAddress("127.0.0.1")
+                .billingAndShipping(
+                        (new Customer()).setName("Nome como esta gravado no cartao")
+                                .setAddress("Rua Volkswagen, 100")
+                                .setAddress2("0")
+                                .setDistrict("Jabaquara")
+                                .setCity("Sao Paulo")
+                                .setState("SP")
+                                .setPostalCode("11111111")
+                                .setCountry("BR")
+                                .setPhone("11111111111")
+                                .setEmail("email.pagador@gmail.com"))
+                .setCreditCard(
+                        (new Card()).setNumber("5448280000000007")
+                                .setExpMonth("12")
+                                .setExpYear("2028")
+                                .setCvvNumber("123")
+                                .setTokenCryptogram("abc1238759uiokjflahdfkjlahs"))
+                .setPayment(new Payment(100.0));
+
+        maxiPago.transactionRequest().execute();
+    }
 
     @Test
     public void shouldCreateSaleWithDebit() throws PropertyException {
