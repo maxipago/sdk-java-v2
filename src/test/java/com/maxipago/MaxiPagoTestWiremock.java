@@ -158,7 +158,7 @@ public class MaxiPagoTestWiremock {
 
         maxiPago.sale()
                 .setProcessorId("5")
-                .setReferenceNum("Teste 012")
+                .setReferenceNum("CreateSaleWithTokenCryptogram")
                 .setIpAddress("127.0.0.1")
                 .billingAndShipping(
                         (new Customer()).setName("Nome como esta gravado no cartao")
