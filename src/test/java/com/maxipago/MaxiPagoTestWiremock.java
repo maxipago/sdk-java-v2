@@ -13,6 +13,7 @@ import java.io.FileReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.PropertyException;
 
+import com.maxipago.enums.ReportsPeriodEnum;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -785,13 +786,13 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderList() {
     	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultOrderList("lastmonth")
+        maxiPago.consultOrderList(ReportsPeriodEnum.LAST_MONTH)
                 .setPageSize(5)
                 .setPageNumber(1);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
-        maxiPago.consultOrderList("lastmonth")
+        maxiPago.consultOrderList(ReportsPeriodEnum.LAST_MONTH)
                 .setPageSize(5)
                 .setPageNumber(2)
                 .setPageToken(response.resultSetInfo.pageToken);

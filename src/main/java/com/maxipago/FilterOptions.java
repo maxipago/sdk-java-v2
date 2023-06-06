@@ -1,5 +1,7 @@
 package com.maxipago;
 
+import com.maxipago.enums.ReportsPeriodEnum;
+
 import javax.xml.bind.annotation.XmlElement;
 
 public class FilterOptions {
@@ -13,7 +15,7 @@ public class FilterOptions {
     public String orderId;
 
     @XmlElement
-    public String period;
+    public ReportsPeriodEnum period;
 
     @XmlElement
     public Integer pageSize;
@@ -67,7 +69,7 @@ public class FilterOptions {
         return this;
     }
 
-    public FilterOptions setPeriod(String period) {
+    public FilterOptions setPeriod(ReportsPeriodEnum period) {
         this.period = period;
         return this;
     }

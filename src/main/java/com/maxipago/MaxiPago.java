@@ -1,5 +1,6 @@
 package com.maxipago;
 
+import com.maxipago.enums.ReportsPeriodEnum;
 import com.maxipago.request.ApiRequest;
 import com.maxipago.request.RApiRequest;
 import com.maxipago.request.Request;
@@ -69,7 +70,7 @@ public class MaxiPago {
         return request;
     }
 
-    public FilterOptions consultOrderList(String period) {
+    public FilterOptions consultOrderList(ReportsPeriodEnum period) {
         createRApiRequest("transactionDetailReport");
 
         request.filterOptions.setPeriod(period);
