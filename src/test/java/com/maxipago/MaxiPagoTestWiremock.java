@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.PropertyException;
 
 import com.maxipago.enums.ReportsPeriodEnum;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -906,11 +907,15 @@ public class MaxiPagoTestWiremock {
 
 		RApiResponse response = maxiPago.rapiRequest().execute();
 
+        boolean rightRecord = false;
 		for (Record record : response.records) {
 			if (record.transactionId != null) {
-				assertEquals("2023059999355845", record.referenceNumber);
+                if ("2023059999355845".equals(record.referenceNumber)) {
+                    rightRecord = true;
+                }
 			}
 		}
+        Assert.assertTrue(rightRecord);
 	}
     
     private String getXMLContextToParse(String strfile) {

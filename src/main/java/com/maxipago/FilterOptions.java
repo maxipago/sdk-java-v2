@@ -15,7 +15,7 @@ public class FilterOptions {
     public String orderId;
 
     @XmlElement
-    public ReportsPeriodEnum period;
+    public String period;
 
     @XmlElement
     public Integer pageSize;
@@ -70,7 +70,7 @@ public class FilterOptions {
     }
 
     public FilterOptions setPeriod(ReportsPeriodEnum period) {
-        this.period = period;
+        this.period = period.value;
         return this;
     }
 
