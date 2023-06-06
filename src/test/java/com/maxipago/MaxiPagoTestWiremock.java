@@ -900,7 +900,7 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNum() {
     	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
         
-        maxiPago.consultOrder("REFERENCE_NUM");
+        maxiPago.consultReferenceNumber("REFERENCE_NUM");
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 

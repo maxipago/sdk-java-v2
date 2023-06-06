@@ -7,6 +7,9 @@ public class FilterOptions {
     public String transactionId;
 
     @XmlElement
+    public String referenceNumber;
+
+    @XmlElement
     public String orderId;
 
     @XmlElement
@@ -51,6 +54,11 @@ public class FilterOptions {
 
     public FilterOptions setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+        return this;
+    }
+
+    public FilterOptions setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
         return this;
     }
 

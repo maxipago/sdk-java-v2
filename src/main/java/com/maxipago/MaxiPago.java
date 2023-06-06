@@ -61,6 +61,14 @@ public class MaxiPago {
         return request;
     }
 
+    public Request consultReferenceNumber(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+
+        return request;
+    }
+
     public FilterOptions consultOrderList(String period) {
         createRApiRequest("transactionDetailReport");
 
