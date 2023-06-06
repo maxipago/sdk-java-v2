@@ -801,6 +801,7 @@ public class MaxiPagoTestWiremock {
         assertEquals(1, (int) response.resultSetInfo.pageNumber);
     }
     
+    
     @Test
     public void shouldCreatePix() throws PropertyException {
     	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
@@ -878,6 +879,25 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldConsultOrder() {
+    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+        
+        maxiPago.consultOrder("0A0104BA:017270E43DE2:ACBF:0B4E365C");
+
+        RApiResponse response = maxiPago.rapiRequest().execute();
+
+        for (Record record : response.records) {
+        	if (record.transactionId!=null && "549470346".equals(record.transactionId) )
+            {
+        		assertEquals("00", record.brandCode);
+        		assertEquals("Success.", record.brandMessage);
+        		assertEquals("MPLMMHZV76543", record.brandTransactionID);
+        		assertEquals("01", record.brandMac);
+            }
+        }
+    }
+    
+    @Test
+    public void shouldConsultOrderByReferenceNum() {
     	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
         
         maxiPago.consultOrder("0A0104BA:017270E43DE2:ACBF:0B4E365C");
