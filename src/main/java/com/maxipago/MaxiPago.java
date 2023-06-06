@@ -66,7 +66,8 @@ public class MaxiPago {
         createRApiRequest("transactionDetailReport");
 
         request.filterOptions.setReferenceNumber(referenceNumber);
-
+        request.filterOptions.setPeriod(ReportsPeriodEnum.TODAY.value);
+        
         return request;
     }
 
