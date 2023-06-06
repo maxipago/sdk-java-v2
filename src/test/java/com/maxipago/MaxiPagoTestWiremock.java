@@ -21,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.maxipago.enums.ChallengePreference;
+import com.maxipago.enums.ReportsPeriodEnum;
 import com.maxipago.paymentmethod.Boleto;
 import com.maxipago.paymentmethod.Card;
 import com.maxipago.paymentmethod.OnlineDebit;
@@ -785,13 +786,13 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderList() {
     	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultOrderList("lastmonth")
+        maxiPago.consultOrderList(ReportsPeriodEnum.LAST_MONTH.value)
                 .setPageSize(5)
                 .setPageNumber(1);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
-        maxiPago.consultOrderList("lastmonth")
+        maxiPago.consultOrderList(ReportsPeriodEnum.LAST_MONTH.value)
                 .setPageSize(5)
                 .setPageNumber(2)
                 .setPageToken(response.resultSetInfo.pageToken);
@@ -897,23 +898,19 @@ public class MaxiPagoTestWiremock {
     }
     
     @Test
-    public void shouldConsultOrderByReferenceNum() {
-    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
-        
-        maxiPago.consultReferenceNumber("REFERENCE_NUM");
+	public void shouldConsultOrderByReferenceNum() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		maxiPago.consultReferenceNumber("2023059999355845");
 
-        for (Record record : response.records) {
-        	if (record.transactionId!=null && "549470346".equals(record.transactionId) )
-            {
-        		assertEquals("00", record.brandCode);
-        		assertEquals("Success.", record.brandMessage);
-        		assertEquals("MPLMMHZV76543", record.brandTransactionID);
-        		assertEquals("01", record.brandMac);
-            }
-        }
-    }
+		RApiResponse response = maxiPago.rapiRequest().execute();
+
+		for (Record record : response.records) {
+			if (record.transactionId != null) {
+				assertEquals("2023059999355845", record.referenceNumber);
+			}
+		}
+	}
     
     private String getXMLContextToParse(String strfile) {
 		StringBuilder xmlData = new StringBuilder();

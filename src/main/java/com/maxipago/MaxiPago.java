@@ -1,5 +1,6 @@
 package com.maxipago;
 
+import com.maxipago.enums.ReportsPeriodEnum;
 import com.maxipago.request.ApiRequest;
 import com.maxipago.request.RApiRequest;
 import com.maxipago.request.Request;
@@ -65,7 +66,8 @@ public class MaxiPago {
         createRApiRequest("transactionDetailReport");
 
         request.filterOptions.setReferenceNumber(referenceNumber);
-
+        request.filterOptions.setPeriod(ReportsPeriodEnum.TODAY.value);
+        
         return request;
     }
 
