@@ -34,7 +34,7 @@ import com.maxipago.request.TransactionResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MaxiPagoTestWiremock {
-    String merchantId = "11631";
+	String merchantId = "11631";
     String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
     private static String CAPTURED_RESPONSE="capturedResponse.xml";
     private static String RAPI_RESPONSE="rapiResponse.xml";
@@ -42,6 +42,7 @@ public class MaxiPagoTestWiremock {
     private static String SALE_DECLINED_RESPONSE="saleDeclinedResponse.xml";
     private static String UNIVERSAL_API="/UniversalAPI/postXML";
     private static String REPORTS_API="/ReportsAPI/servlet/ReportsAPI";
+    private static final String RAPI_REFERENCE_NUMBER = "2023059999355845";
 
     @Rule
 	public WireMockRule wireMockRule = new WireMockRule(8080);
@@ -902,14 +903,14 @@ public class MaxiPagoTestWiremock {
 	public void shouldConsultOrderByReferenceNum() {
 		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumber("2023059999355845");
+		maxiPago.consultReferenceNumber(RAPI_REFERENCE_NUMBER);
 
 		RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
 		for (Record record : response.records) {
 			if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -922,14 +923,14 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNumYesterday() {
         MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod("2023059999355845", ReportsPeriodEnum.YESTERDAY);
+        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.YESTERDAY);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -942,14 +943,14 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNumLastSevenDays() {
         MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod("2023059999355845", ReportsPeriodEnum.LAST_SEVEN);
+        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_SEVEN);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -962,14 +963,14 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNumLastThirtyDays() {
         MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod("2023059999355845", ReportsPeriodEnum.LAST_THIRTY);
+        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_THIRTY);
         
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -982,14 +983,14 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNumThisWeek() {
         MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod("2023059999355845", ReportsPeriodEnum.THIS_WEEK);
+        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -1002,14 +1003,14 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNumThisMonth() {
         MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod("2023059999355845", ReportsPeriodEnum.THIS_WEEK);
+        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -1022,14 +1023,14 @@ public class MaxiPagoTestWiremock {
     public void shouldConsultOrderByReferenceNumLastMonth() {
         MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod("2023059999355845", ReportsPeriodEnum.LAST_MONTH);
+        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_MONTH);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
@@ -1050,14 +1051,14 @@ public class MaxiPagoTestWiremock {
         String startTime = "00:00:01";
         String endTime = "23:59:59";
 
-        maxiPago.consultReferenceNumberPeriodRange("2023059999355845", startDate, endDate, startTime, endTime);
+        maxiPago.consultReferenceNumberPeriodRange(RAPI_REFERENCE_NUMBER, startDate, endDate, startTime, endTime);
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         boolean rightRecord = false;
         for (Record record : response.records) {
             if (record.referenceNumber != null) {
-                if ("2023059999355845".equals(record.referenceNumber)) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
                     rightRecord = true;
                     break;
                 }
