@@ -34,8 +34,8 @@ import com.maxipago.request.TransactionResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MaxiPagoTestWiremock {
-	String merchantId = "11631";
-    String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
+	private static String merchantId = "11631";
+	private static String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
     private static String CAPTURED_RESPONSE="capturedResponse.xml";
     private static String RAPI_RESPONSE="rapiResponse.xml";
     private static String CARDONFILE_RESPONSE="cardOnFileResponse.xml";
