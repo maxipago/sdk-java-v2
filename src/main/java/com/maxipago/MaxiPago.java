@@ -71,6 +71,83 @@ public class MaxiPago {
         return request;
     }
 
+    public Request consultReferenceNumberYesterday(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.YESTERDAY);
+
+        return request;
+    }
+
+    public Request consultReferenceNumberLastThirtyDays(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.LAST_THIRTY);
+
+        return request;
+    }
+
+    public Request consultReferenceNumberLastMonth(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.LAST_MONTH);
+
+        return request;
+    }
+
+    public Request consultReferenceNumberThisMonth(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.THIS_MONTH);
+
+        return request;
+    }
+
+    public Request consultReferenceNumberThisWeek(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.THIS_WEEK);
+
+        return request;
+    }
+
+    public Request consultReferenceNumberPeriod(String referenceNumber, ReportsPeriodEnum period) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(period);
+
+
+        return request;
+    }
+
+    public Request consultReferenceNumberRange(String referenceNumber, String startDate, String endDate, String startTime, String endTime) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.RANGE);
+        request.filterOptions.setStartDate(startDate);
+        request.filterOptions.setEndDate(endDate);
+        request.filterOptions.setStartTime(startTime);
+        request.filterOptions.setEndTime(endTime);
+
+        return request;
+    }
+
+    public Request consultReferenceNumberLastSevenDays(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.LAST_SEVEN);
+
+        return request;
+    }
+
     public FilterOptions consultOrderList(ReportsPeriodEnum period) {
         createRApiRequest("transactionDetailReport");
 
