@@ -899,7 +899,7 @@ public class MaxiPagoTestWiremock {
         }
     }
     
-    @Test
+	@Test
 	public void shouldConsultOrderByReferenceNum() {
 		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
@@ -907,165 +907,165 @@ public class MaxiPagoTestWiremock {
 
 		RApiResponse response = maxiPago.rapiRequest().execute();
 
-        boolean rightRecord = false;
+		boolean rightRecord = false;
 		for (Record record : response.records) {
 			if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
 			}
 		}
-        Assert.assertTrue(rightRecord);
+		Assert.assertTrue(rightRecord);
 	}
 
-    @Test
-    public void shouldConsultOrderByReferenceNumYesterday() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+	@Test
+	public void shouldConsultOrderByReferenceNumYesterday() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.YESTERDAY);
+		maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.YESTERDAY);
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		RApiResponse response = maxiPago.rapiRequest().execute();
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
 
-    @Test
-    public void shouldConsultOrderByReferenceNumLastSevenDays() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+	@Test
+	public void shouldConsultOrderByReferenceNumLastSevenDays() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_SEVEN);
+		maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_SEVEN);
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		RApiResponse response = maxiPago.rapiRequest().execute();
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
 
-    @Test
-    public void shouldConsultOrderByReferenceNumLastThirtyDays() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+	@Test
+	public void shouldConsultOrderByReferenceNumLastThirtyDays() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_THIRTY);
-        
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_THIRTY);
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		RApiResponse response = maxiPago.rapiRequest().execute();
 
-    @Test
-    public void shouldConsultOrderByReferenceNumThisWeek() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
 
-        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
+	@Test
+	public void shouldConsultOrderByReferenceNumThisWeek() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		RApiResponse response = maxiPago.rapiRequest().execute();
 
-    @Test
-    public void shouldConsultOrderByReferenceNumThisMonth() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
 
-        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
+	@Test
+	public void shouldConsultOrderByReferenceNumThisMonth() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		RApiResponse response = maxiPago.rapiRequest().execute();
 
-    @Test
-    public void shouldConsultOrderByReferenceNumLastMonth() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
 
-        maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_MONTH);
+	@Test
+	public void shouldConsultOrderByReferenceNumLastMonth() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		maxiPago.consultReferenceNumberPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_MONTH);
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		RApiResponse response = maxiPago.rapiRequest().execute();
 
-    @Test
-    public void shouldConsultOrderByReferenceNumRange() {
-        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
 
-        // mm/dd/yyyy
-        String startDate = "05/05/2023";
-        String endDate = "06/05/2023";
+	@Test
+	public void shouldConsultOrderByReferenceNumRange() {
+		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-        // hh:mm:ss
-        String startTime = "00:00:01";
-        String endTime = "23:59:59";
+		// mm/dd/yyyy
+		String startDate = "05/05/2023";
+		String endDate = "06/05/2023";
 
-        maxiPago.consultReferenceNumberPeriodRange(RAPI_REFERENCE_NUMBER, startDate, endDate, startTime, endTime);
+		// hh:mm:ss
+		String startTime = "00:00:01";
+		String endTime = "23:59:59";
 
-        RApiResponse response = maxiPago.rapiRequest().execute();
+		maxiPago.consultReferenceNumberPeriodRange(RAPI_REFERENCE_NUMBER, startDate, endDate, startTime, endTime);
 
-        boolean rightRecord = false;
-        for (Record record : response.records) {
-            if (record.referenceNumber != null) {
-                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
-                    rightRecord = true;
-                    break;
-                }
-            }
-        }
-        Assert.assertTrue(rightRecord);
-    }
+		RApiResponse response = maxiPago.rapiRequest().execute();
+
+		boolean rightRecord = false;
+		for (Record record : response.records) {
+			if (record.referenceNumber != null) {
+				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNumber)) {
+					rightRecord = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(rightRecord);
+	}
     
     private String getXMLContextToParse(String strfile) {
 		StringBuilder xmlData = new StringBuilder();
