@@ -1,5 +1,6 @@
 package com.maxipago;
 
+import com.maxipago.enums.ReportsPeriodEnum;
 import com.maxipago.request.ApiRequest;
 import com.maxipago.request.RApiRequest;
 import com.maxipago.request.Request;
@@ -61,7 +62,39 @@ public class MaxiPago {
         return request;
     }
 
-    public FilterOptions consultOrderList(String period) {
+    public Request consultReferenceNumber(String referenceNumber) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.TODAY);
+        
+        return request;
+    }
+    
+    public Request consultReferenceNumberPeriod(String referenceNumber, ReportsPeriodEnum period) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(period);
+
+
+        return request;
+    }
+
+    public Request consultReferenceNumberPeriodRange(String referenceNumber, String startDate, String endDate, String startTime, String endTime) {
+        createRApiRequest("transactionDetailReport");
+
+        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setPeriod(ReportsPeriodEnum.RANGE);
+        request.filterOptions.setStartDate(startDate);
+        request.filterOptions.setEndDate(endDate);
+        request.filterOptions.setStartTime(startTime);
+        request.filterOptions.setEndTime(endTime);
+
+        return request;
+    }
+
+    public FilterOptions consultOrderList(ReportsPeriodEnum period) {
         createRApiRequest("transactionDetailReport");
 
         request.filterOptions.setPeriod(period);

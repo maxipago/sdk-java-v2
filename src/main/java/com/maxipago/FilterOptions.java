@@ -1,10 +1,15 @@
 package com.maxipago;
 
+import com.maxipago.enums.ReportsPeriodEnum;
+
 import javax.xml.bind.annotation.XmlElement;
 
 public class FilterOptions {
     @XmlElement
     public String transactionId;
+
+    @XmlElement
+    public String referenceNumber;
 
     @XmlElement
     public String orderId;
@@ -54,13 +59,18 @@ public class FilterOptions {
         return this;
     }
 
+    public FilterOptions setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+        return this;
+    }
+
     public FilterOptions setOrderId(String orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public FilterOptions setPeriod(String period) {
-        this.period = period;
+    public FilterOptions setPeriod(ReportsPeriodEnum period) {
+        this.period = period.value;
         return this;
     }
 

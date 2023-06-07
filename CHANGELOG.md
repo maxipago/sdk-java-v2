@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.2] - 07/JUN/2023
+### Added
+- Consulta por reference number
+
 ## [2.1.1] - 19/MAI/2023
 ### Added
 - Disponibilizar campo tokenCryptogram
