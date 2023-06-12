@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api-error>
+	<errorCode>1</errorCode>
+	<errorMsg><![CDATA[Schema validation for the vertical SA for the incoming transaction xml failed. Reason Parser Error: URI=null Line=1: cvc-minInclusive-valid: Value '0' is not facet-valid with respect to minInclusive '1' for type 'positiveInteger'.]]></errorMsg>
+</api-error>
