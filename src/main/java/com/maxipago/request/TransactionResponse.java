@@ -15,6 +15,8 @@ public class TransactionResponse {
     public String creditCardBin;
     public String creditCardLast4;
     public String errorMessage;
+    public String errorMsg;
+    public String errorCode;
     public String processorTransactionID;
     public String processorReferenceNumber;
     public String creditCardScheme;

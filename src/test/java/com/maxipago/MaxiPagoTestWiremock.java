@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.any;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.FileReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.PropertyException;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,6 +42,7 @@ public class MaxiPagoTestWiremock {
     private static String RAPI_RESPONSE="rapiResponse.xml";
     private static String CARDONFILE_RESPONSE="cardOnFileResponse.xml";
     private static String SALE_DECLINED_RESPONSE="saleDeclinedResponse.xml";
+    private static String AUTH_ERROR_RESPONSE="authErrorResponse.xml";
     private static String UNIVERSAL_API="/UniversalAPI/postXML";
     private static String REPORTS_API="/ReportsAPI/servlet/ReportsAPI";
     private static final String RAPI_REFERENCE_NUMBER = "2023059999355845";
@@ -1066,6 +1069,36 @@ public class MaxiPagoTestWiremock {
 		}
 		Assert.assertTrue(rightRecord);
 	}
+
+    @Test
+    public void apiErrorTest(){
+        MaxiPago maxiPago = prepareResponse(AUTH_ERROR_RESPONSE, UNIVERSAL_API);
+        maxiPago.auth()
+                .setProcessorId("0")
+                .setReferenceNum("CreateAuth")
+                .setIpAddress("127.0.0.1")
+                .billingAndShipping((new Customer())
+                        .setName("Nome como esta gravado no cartao")
+                        .setAddress("Rua Volkswagen, 100")
+                        .setAddress2("0")
+                        .setDistrict("Jabaquara")
+                        .setCity("Sao Paulo")
+                        .setState("SP")
+                        .setPostalCode("11111111")
+                        .setCountry("BR")
+                        .setPhone("11111111111")
+                        .setEmail("email.pagador@gmail.com"))
+                .setCreditCard((new Card())
+                        .setNumber("5448280000000007")
+                        .setExpMonth("12")
+                        .setExpYear("2028")
+                        .setCvvNumber("123"))
+                .setPayment(new Payment(100.0));
+
+        TransactionResponse response = maxiPago.transactionRequest().execute();
+        assertTrue(StringUtils.isNotBlank(response.errorMsg));
+        assertEquals("1", response.errorCode);
+    }
     
     private String getXMLContextToParse(String strfile) {
 		StringBuilder xmlData = new StringBuilder();
