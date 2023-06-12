@@ -1071,7 +1071,7 @@ public class MaxiPagoTestWiremock {
 	}
 
     @Test
-    public void apiErrorTest(){
+    public void invalidProcessorIdTest(){
         MaxiPago maxiPago = prepareResponse(AUTH_ERROR_RESPONSE, UNIVERSAL_API);
         maxiPago.auth()
                 .setProcessorId("0")
