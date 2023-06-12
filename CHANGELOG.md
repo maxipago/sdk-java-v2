@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.3] - 12/JUN/2023
+### Changed
+- Correcao da mensagem de erro
+
 ## [2.1.2] - 07/JUN/2023
 ### Added
 - Consulta por reference number
