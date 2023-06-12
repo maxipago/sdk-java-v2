@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.PropertyException;
@@ -1072,7 +1071,7 @@ public class MaxiPagoTestWiremock {
 	}
 
     @Test
-    public void errorTest(){
+    public void apiErrorTest(){
         MaxiPago maxiPago = prepareResponse(AUTH_ERROR_RESPONSE, UNIVERSAL_API);
         maxiPago.auth()
                 .setProcessorId("0")
@@ -1097,7 +1096,6 @@ public class MaxiPagoTestWiremock {
                 .setPayment(new Payment(100.0));
 
         TransactionResponse response = maxiPago.transactionRequest().execute();
-        Logger.getLogger("SDK-Java").info(response.toString());
         assertTrue(StringUtils.isNotBlank(response.errorMsg));
         assertEquals("1", response.errorCode);
     }
