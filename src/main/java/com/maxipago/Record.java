@@ -2,7 +2,7 @@ package com.maxipago;
 
 public class Record {
     public String transactionId;
-    public String referenceNumber;
+    public String referenceNum;
     public String transactionType;
     public String transactionAmount;
     public String shippingAmount;

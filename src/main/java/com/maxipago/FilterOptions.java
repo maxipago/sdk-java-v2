@@ -59,8 +59,8 @@ public class FilterOptions {
         return this;
     }
 
-    public FilterOptions setReferenceNumber(String referenceNumber) {
-        this.referenceNum = referenceNumber;
+    public FilterOptions setReferenceNum(String referenceNum) {
+        this.referenceNum = referenceNum;
         return this;
     }
 

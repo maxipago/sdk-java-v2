@@ -62,29 +62,29 @@ public class MaxiPago {
         return request;
     }
 
-    public Request consultReferenceNumber(String referenceNumber) {
+    public Request consultReferenceNum(String referenceNum) {
         createRApiRequest("transactionDetailReport");
 
-        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setReferenceNum(referenceNum);
         request.filterOptions.setPeriod(ReportsPeriodEnum.TODAY);
         
         return request;
     }
     
-    public Request consultReferenceNumberPeriod(String referenceNumber, ReportsPeriodEnum period) {
+    public Request consultReferenceNumPeriod(String referenceNum, ReportsPeriodEnum period) {
         createRApiRequest("transactionDetailReport");
 
-        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setReferenceNum(referenceNum);
         request.filterOptions.setPeriod(period);
 
 
         return request;
     }
 
-    public Request consultReferenceNumberPeriodRange(String referenceNumber, String startDate, String endDate, String startTime, String endTime) {
+    public Request consultReferenceNumPeriodRange(String referenceNum, String startDate, String endDate, String startTime, String endTime) {
         createRApiRequest("transactionDetailReport");
 
-        request.filterOptions.setReferenceNumber(referenceNumber);
+        request.filterOptions.setReferenceNum(referenceNum);
         request.filterOptions.setPeriod(ReportsPeriodEnum.RANGE);
         request.filterOptions.setStartDate(startDate);
         request.filterOptions.setEndDate(endDate);
