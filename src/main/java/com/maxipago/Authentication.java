@@ -16,6 +16,10 @@ public class Authentication {
 
     @XmlElement
     public String onFailure;
+    @XmlElement
+    public String responseMode;
+    @XmlElement
+    public String sendNotification;
 
     public Authentication() {
     }
@@ -34,6 +38,14 @@ public class Authentication {
         this.mpiProcessorID = mpiProcessorID;
         this.onFailure = onFailure;
         this.challengePreference = challengePreference;
+    }
+    
+    public Authentication(String mpiProcessorID, String onFailure, ChallengePreference challengePreference,String responseMode, String sendNotification) {
+        this.mpiProcessorID = mpiProcessorID;
+        this.onFailure = onFailure;
+        this.challengePreference = challengePreference;
+        this.responseMode = responseMode;
+        this.sendNotification = sendNotification;
     }
 
     public Authentication setOnFailure(String onFailure) {

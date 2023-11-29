@@ -132,7 +132,7 @@ public abstract class AbstractRequest<A, B> {
                     .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
                     .build();
 
-//            Logger.getLogger("SDK-Java").info(writer.toString());
+            //Logger.getLogger("SDK-Java").info(writer.toString());
 
             httpPost.setEntity(new StringEntity(writer.toString(), encode));
             httpPost.setConfig(params);
