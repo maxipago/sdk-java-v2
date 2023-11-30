@@ -152,6 +152,7 @@ public class Transaction {
 
     public Transaction setBilling(Customer billing) {
         this.billing = billing;
+        
         return this;
     }
 

@@ -13,7 +13,6 @@ public class Authentication {
     
     @XmlElement
     public String mpiProcessorID;
-
     @XmlElement
     public String onFailure;
     @XmlElement

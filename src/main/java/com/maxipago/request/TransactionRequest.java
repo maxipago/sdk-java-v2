@@ -13,12 +13,10 @@ public class TransactionRequest extends AbstractRequest<TransactionRequest, Tran
 
     private Order order;
 
-    public TransactionRequest() {
-    }
+    public TransactionRequest() {}
 
     public TransactionRequest(Environment environment) {
         super(environment);
-
         order = new Order();
     }
 

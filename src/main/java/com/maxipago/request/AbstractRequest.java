@@ -133,7 +133,7 @@ public abstract class AbstractRequest<A, B> {
                     .build();
 
             Logger.getLogger("SDK-Java").info(writer.toString());
-
+            
             httpPost.setEntity(new StringEntity(writer.toString(), encode));
             httpPost.setConfig(params);
 
