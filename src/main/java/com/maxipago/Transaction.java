@@ -1,11 +1,15 @@
 package com.maxipago;
 
-import com.maxipago.enums.ChallengePreference;
-import com.maxipago.paymentmethod.*;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import java.util.ArrayList;
+
+import com.maxipago.enums.ChallengePreference;
+import com.maxipago.paymentmethod.Boleto;
+import com.maxipago.paymentmethod.Card;
+import com.maxipago.paymentmethod.OnlineDebit;
+import com.maxipago.paymentmethod.PayType;
+import com.maxipago.paymentmethod.Pix;
+import com.maxipago.paymentmethod.Token;
 
 @XmlSeeAlso({PayType.class, FraudDetails.class})
 public class Transaction {
@@ -108,6 +112,11 @@ public class Transaction {
         this.authentication = new Authentication(mpiProcessorID, onFailure, challengePreference);
         return this;
     }
+    
+    public Transaction setAuthentication(String mpiProcessorID, String onFailure, ChallengePreference challengePreference, String responseMode, String sendNotification) {
+        this.authentication = new Authentication(mpiProcessorID, onFailure, challengePreference,responseMode, sendNotification);
+        return this;
+    }
 
     public Transaction setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
@@ -143,6 +152,7 @@ public class Transaction {
 
     public Transaction setBilling(Customer billing) {
         this.billing = billing;
+        
         return this;
     }
 

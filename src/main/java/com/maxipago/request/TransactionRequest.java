@@ -1,20 +1,9 @@
 package com.maxipago.request;
 
-import com.maxipago.Environment;
-import com.maxipago.Order;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
+import com.maxipago.Environment;
+import com.maxipago.Order;
 
 @XmlRootElement(name = "transaction-request")
 public class TransactionRequest extends AbstractRequest<TransactionRequest, TransactionResponse> {
@@ -23,12 +12,10 @@ public class TransactionRequest extends AbstractRequest<TransactionRequest, Tran
 
     private Order order;
 
-    public TransactionRequest() {
-    }
+    public TransactionRequest() {}
 
     public TransactionRequest(Environment environment) {
         super(environment);
-
         order = new Order();
     }
 

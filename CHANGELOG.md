@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.5] - 29/NOV/2023
+### Added
+- Inclusão do sendNotification e responseMode no 3DS para callback
+
 ## [2.1.4] - 10/JUL/2023
 ### Fix
 - Mudanca de referenceNumber para referenceNum
