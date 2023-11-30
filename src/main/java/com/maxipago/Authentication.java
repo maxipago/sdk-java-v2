@@ -9,7 +9,7 @@ import com.maxipago.enums.ChallengePreference;
 public class Authentication {
     public static String DECLINE = "decline";
     public static String CONTINUE = "continue";
-    public ChallengePreference challengePreference = ChallengePreference.NO_PREFERENCE;    
+    public ChallengePreference challengePreference = ChallengePreference.NO_PREFERENCE;
     
     @XmlElement
     public String mpiProcessorID;
