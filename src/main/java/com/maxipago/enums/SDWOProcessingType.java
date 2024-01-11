@@ -1,7 +1,7 @@
 package com.maxipago.enums;
 
 public enum SDWOProcessingType {
-	PURCHASE("01"), CASH_IN("02");
+	PURCHASE("Purchase"), CASH_IN("Cash-in");
 	
 	private String processingType;
 	
