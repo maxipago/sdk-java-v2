@@ -69,6 +69,9 @@ public class Transaction {
     
     @XmlElement
     public Device device;
+    
+    @XmlElement
+    public Wallet wallet;
 
     public Transaction fraudDetails(String fraudProcessorID, String fraudToken) {
         return fraudDetails(fraudProcessorID, fraudToken, "N", "N");
@@ -245,5 +248,10 @@ public class Transaction {
     public Transaction setUserAgent(String userAgent) {
         this.userAgent = userAgent;
         return this;
+    }
+    
+    public Transaction setWallet(Wallet wallet) {
+    	this.wallet = wallet;
+    	return this;
     }
 }

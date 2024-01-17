@@ -477,6 +477,51 @@ maxiPago.sale()
        TransactionResponse response =  maxiPago.transactionRequest().execute();
 ```
 
+#### Venda direta com Autenticação 3DS V2 e SDWO (cartão de crédito e débito)
+```java
+MaxiPago maxiPago = new MaxiPago(environment);
+
+maxiPago.sale()
+	.setProcessorId("5")
+	.setReferenceNum("CreateSaleWith3DS")
+	.setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
+	.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
+	.device(new Device()
+			.setColorDepth("1")
+			.setJavaEnabled(true)
+			.setLanguage("BR")
+			.setScreenHeight("550")
+			.setScreenWidth("550")
+			.setTimeZoneOffset(3))
+	.setIpAddress("127.0.0.1")
+	.billingAndShipping((new Customer())
+			.setName("Nome como esta gravado no cartao")
+			.setAddress("Rua Volkswagen 100")
+			.setAddress2("0")
+			.setDistrict("Jabaquara")
+			.setCity("Sao Paulo")
+			.setState("SP")
+			.setPostalCode("11111111")
+			.setCountry("BR")
+			.setPhone("11111111111")
+			.setEmail("email.pagador@gmail.com"))
+	.setCreditCard((new Card())
+			.setNumber("5221834791042066")
+			.setExpMonth("12")
+			.setExpYear("2030")
+			.setCvvNumber("123"))
+	.setPayment(new Payment(100.0))
+	.setWallet(new Wallet()
+			.setSDWO(new SDWO()
+					.setId(12345)
+					.setProcessingType(SDWOProcessingType.CASH_IN)
+					.setSenderTaxIdentification("56326738000106")
+					.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)));
+				  
+
+       TransactionResponse response =  maxiPago.transactionRequest().execute();
+```
+
 #### Criando um Pix
 ```java
 MaxiPago maxiPago = new MaxiPago(environment);

@@ -112,6 +112,9 @@ public class Request {
 
     @XmlElement
     public FilterOptions filterOptions;
+    
+    @XmlElement
+    public Wallet wallet;
 
     public Request setCustomerId(String customerId) {
         this.customerId = customerId;
@@ -313,6 +316,11 @@ public class Request {
 
     public Request setShippingInfo(Customer shippingInfo) {
         this.shippingInfo = shippingInfo;
+        return this;
+    }
+    
+    public Request setWallet(Wallet wallet) {
+        this.wallet = wallet;
         return this;
     }
 }
