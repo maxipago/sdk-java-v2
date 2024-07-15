@@ -516,7 +516,14 @@ maxiPago.sale()
 					.setId(12345)
 					.setProcessingType(SDWOProcessingType.CASH_IN)
 					.setSenderTaxIdentification("56326738000106")
-					.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)));
+					.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)
+                                        .setPaymentDestination("04")
+                                        .setMerchantTaxId("11122233344455")
+                                        .setReceiverData(new ReceiverData()
+                                                                .setFirstName("Jose")
+                                                                .setLastName("Silva")
+                                                                .setTaxIdNumber("123556")
+                                                                .setWalletAccountIdentification("342432409"))));
 				  
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
