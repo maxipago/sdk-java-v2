@@ -42,6 +42,16 @@ public class SDWO {
 		return this;
 	}
 
+	public SDWO setPaymentDestination(String paymentDestination) {
+		this.paymentDestination = paymentDestination;
+		return this;
+	}
+
+	public SDWO setMerchantTaxId(String merchantTaxId) {
+		this.merchantTaxId = merchantTaxId;
+		return this;
+	}
+
 	public SDWO setReceiverData(ReceiverData receiverData) {
 		this.receiverData = receiverData;
 		return this;
