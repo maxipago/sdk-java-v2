@@ -14,6 +14,13 @@ public class SDWO {
     public String senderTaxIdentification;
 	@XmlElement
     public String businessApplicationIdentifier;
+	@XmlElement
+    public String paymentDestination;
+	@XmlElement
+    public String merchantTaxId;
+	@XmlElement
+    public ReceiverData receiverData;
+	
 	
 	public SDWO setId(int id) {
 		this.id = id;
@@ -32,6 +39,21 @@ public class SDWO {
 	
 	public SDWO setBusinessApplicationIdentifier(BusinessApplicationIdentifier businessApplicationIdentifier) {
 		this.businessApplicationIdentifier = businessApplicationIdentifier.toString();
+		return this;
+	}
+
+	public SDWO setPaymentDestination(String paymentDestination) {
+		this.paymentDestination = paymentDestination;
+		return this;
+	}
+
+	public SDWO setMerchantTaxId(String merchantTaxId) {
+		this.merchantTaxId = merchantTaxId;
+		return this;
+	}
+
+	public SDWO setReceiverData(ReceiverData receiverData) {
+		this.receiverData = receiverData;
 		return this;
 	}
 }

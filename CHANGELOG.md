@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.7] - 15/JUL/2024
+### Added
+- Inclusao de Campos SDWO
+
+## [2.1.6] - 17/JAN/2024
+### Added
+- Criação dos campos de SDWO
+
 ## [2.1.5] - 29/NOV/2023
 ### Added
 - Inclusão do sendNotification e responseMode no 3DS para callback
