@@ -73,6 +73,9 @@ public class Transaction {
     @XmlElement
     public Wallet wallet;
 
+    @XmlElement
+    public Integer paymentFacilitatorID;
+
     public Transaction fraudDetails(String fraudProcessorID, String fraudToken) {
         return fraudDetails(fraudProcessorID, fraudToken, "N", "N");
     }
@@ -101,6 +104,17 @@ public class Transaction {
         }
 
         itemList.item.add((new Item(itemIndex, itemProductCode, itemDescription, itemQuantity, itemTotalAmount, itemUnitCost)));
+        itemList.itemCount++;
+
+        return this;
+    }
+
+    public Transaction addItem(Integer itemIndex, Integer sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId) {
+        if (itemList == null) {
+            itemList = new ItemList();
+        }
+
+        itemList.item.add((new Item(itemIndex, sellerMcc, sellerId, sellerAddress, sellerCity, sellerState, sellerCountry, sellerCep, sellerTaxId)));
         itemList.itemCount++;
 
         return this;
@@ -253,5 +267,10 @@ public class Transaction {
     public Transaction setWallet(Wallet wallet) {
     	this.wallet = wallet;
     	return this;
+    }
+
+    public Transaction setPaymentFacilitatorID(Integer paymentFacilitatorID){
+        this.paymentFacilitatorID = paymentFacilitatorID;
+        return this;
     }
 }
