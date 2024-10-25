@@ -9,7 +9,9 @@ a SDK oferece os seguintes recursos:
 * Cancelamento
 * Estorno
 * Autorização com Antifraude
-* Venda direta com Autenticação - 3DS V2 (cartão de crédito e débito)
+* Venda direta com Autenticação 3DS V2 (cartão de crédito e débito)
+* Venda direta com Autenticação 3DS V2 e SDWO (cartão de crédito e débito)
+* Venda direta com Autenticação 3DS V2 e MCC Dinâmico (cartão de crédito e débito)
 * Verificação de cartão - Zero Dollar
 * Boleto bancário
 * Cadastro, atualização e remoção de clientes
