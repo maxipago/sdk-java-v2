@@ -109,7 +109,7 @@ public class Transaction {
         return this;
     }
 
-    public Transaction addItem(Integer itemIndex, Integer sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId) {
+    public Transaction addItem(Integer itemIndex, String sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId) {
         if (itemList == null) {
             itemList = new ItemList();
         }

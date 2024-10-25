@@ -566,8 +566,8 @@ maxiPago.sale()
 			.setCvvNumber("123"))
 	.setPayment(new Payment(100.0))
         .setPaymentFacilitatorID(249171)
-        .addItem(1, 1234, "56789", "Rua um", "Capivari", "SP", "BRA", "000000000", "12345678901234")
-        .addItem(2, 5678, "90123", "Rua dois", "Capivari", "SP", "BRA", "000000000", "12345678901234")
+        .addItem(1, "1234", "56789", "Rua um", "Capivari", "SP", "BRA", "000000000", "12345678901234")
+        .addItem(2, "5678", "90123", "Rua dois", "Capivari", "SP", "BRA", "000000000", "12345678901234")
 				  
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();

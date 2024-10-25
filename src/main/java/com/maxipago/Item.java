@@ -24,7 +24,7 @@ public class Item {
     public Double itemUnitCost;
 
     @XmlElement
-    public Integer sellerMcc;
+    public String sellerMcc;
 
     @XmlElement
     public String sellerId;
@@ -58,7 +58,7 @@ public class Item {
         this.itemUnitCost = itemUnitCost;
     }
 
-    public Item(Integer itemIndex, Integer sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId) {
+    public Item(Integer itemIndex, String sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId) {
         this.itemIndex = itemIndex;
         this.sellerMcc = sellerMcc;
         this.sellerId = sellerId;
@@ -100,7 +100,7 @@ public class Item {
         return this;
     }
 
-    public Item setSellerMcc(Integer sellerMcc){
+    public Item setSellerMcc(String sellerMcc){
         this.sellerMcc = sellerMcc;
         return this;
     }
