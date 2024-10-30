@@ -23,6 +23,30 @@ public class Item {
     @XmlElement
     public Double itemUnitCost;
 
+    @XmlElement
+    public String sellerMcc;
+
+    @XmlElement
+    public String sellerId;
+
+    @XmlElement
+    public String sellerAddress;
+
+    @XmlElement
+    public String sellerCity;
+
+    @XmlElement
+    public String sellerState;
+
+    @XmlElement
+    public String sellerCountry;
+
+    @XmlElement
+    public String sellerCep;
+
+    @XmlElement
+    public String sellerTaxId;
+
     public Item() {}
 
     public Item(Integer itemIndex, String itemProductCode, String itemDescription, Integer itemQuantity, Double itemTotalAmount, Double itemUnitCost) {
@@ -32,6 +56,18 @@ public class Item {
         this.itemQuantity = itemQuantity;
         this.itemTotalAmount = itemTotalAmount;
         this.itemUnitCost = itemUnitCost;
+    }
+
+    public Item(Integer itemIndex, String sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId) {
+        this.itemIndex = itemIndex;
+        this.sellerMcc = sellerMcc;
+        this.sellerId = sellerId;
+        this.sellerAddress = sellerAddress;
+        this.sellerCity = sellerCity;
+        this.sellerState = sellerState;
+        this.sellerCountry = sellerCountry;
+        this.sellerCep = sellerCep;
+        this.sellerTaxId = sellerTaxId;
     }
 
     public Item setItemIndex(Integer itemIndex) {
@@ -61,6 +97,46 @@ public class Item {
 
     public Item setItemUnitCost(Double itemUnitCost) {
         this.itemUnitCost = itemUnitCost;
+        return this;
+    }
+
+    public Item setSellerMcc(String sellerMcc){
+        this.sellerMcc = sellerMcc;
+        return this;
+    }
+
+    public Item setSellerId(String sellerId){
+        this.sellerId = sellerId;
+        return this;
+    }
+
+    public Item setSellerAddress(String sellerAddress){
+        this.sellerAddress = sellerAddress;
+        return this;
+    }
+
+    public Item setSellerCity(String sellerCity){
+        this.sellerCity = sellerCity;
+        return this;
+    }
+
+    public Item setSellerState(String sellerState){
+        this.sellerState = sellerState;
+        return this;
+    }
+    
+    public Item setSellerCountry(String sellerCountry){
+        this.sellerCountry = sellerCountry;
+        return this;
+    }
+    
+    public Item setSellerCep(String sellerCep){
+        this.sellerCep = sellerCep;
+        return this;
+    }
+    
+    public Item setSellerTaxId(String sellerTaxId){
+        this.sellerTaxId = sellerTaxId;
         return this;
     }
 }
