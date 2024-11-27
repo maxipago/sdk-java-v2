@@ -7,7 +7,7 @@ import com.maxipago.enums.SDWOProcessingType;
 
 public class SDWO {
 	@XmlElement
-    public int id;
+    public String id;
 	@XmlElement
     public String processingType;
 	@XmlElement
@@ -22,7 +22,7 @@ public class SDWO {
     public ReceiverData receiverData;
 	
 	
-	public SDWO setId(int id) {
+	public SDWO setId(String id) {
 		this.id = id;
 		return this;
 	}

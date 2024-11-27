@@ -1171,7 +1171,7 @@ public class MaxiPagoTestWiremock {
 	        .setPayment(new Payment(100.0))
 	        .setWallet(new Wallet()
 	        		.setSDWO(new SDWO()
-	        				.setId(12345)
+	        				.setId("12345")
 	        				.setProcessingType(SDWOProcessingType.CASH_IN)
 	        				.setSenderTaxIdentification("56326738000106")
 	        				.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)));
