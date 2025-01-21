@@ -525,7 +525,9 @@ maxiPago.sale()
                                                                 .setFirstName("Jose")
                                                                 .setLastName("Silva")
                                                                 .setTaxIdNumber("123556")
-                                                                .setWalletAccountIdentification("342432409"))));
+                                                                .setWalletAccountIdentification("342432409"))
+                                        .setSenderData(new SenderData()
+                                                                .setTaxIdNumber("123456"))));
 				  
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
