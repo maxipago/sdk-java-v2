@@ -18,9 +18,9 @@ public class SDWO {
     public String paymentDestination;
 	@XmlElement
     public String merchantTaxId;
-	@XmlElement
+    @XmlElement
     public ReceiverData receiverData;
-	@XmlElement
+    @XmlElement
     public SenderData senderData;
 	
 	
