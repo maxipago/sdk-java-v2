@@ -141,7 +141,9 @@ public abstract class AbstractRequest<A, B> {
             httpPost.addHeader("Content-Type", "text/xml; charset=" + encode);
             httpPost.addHeader("User-Agent", "MaxiPago-SDK/1.0 (Java; Linux x86_64)");
             for (String key : headers.keySet()){
-                httpPost.addHeader(key, headers.get(key));
+                if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(headers.get(key))){
+                    httpPost.addHeader(key, headers.get(key));
+                }
             }
             HttpResponse response = null;
 
