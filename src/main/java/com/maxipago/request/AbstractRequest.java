@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
@@ -24,6 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,6 +45,7 @@ import com.maxipago.Environment;
 public abstract class AbstractRequest<A, B> {
     @XmlElement(name = "verification")
     public Environment verification;
+    private HashMap<String, String> headers = new HashMap<>();
     public static String encode = StandardCharsets.UTF_8.toString();
     
     public AbstractRequest() {
@@ -137,7 +140,11 @@ public abstract class AbstractRequest<A, B> {
 
             httpPost.addHeader("Content-Type", "text/xml; charset=" + encode);
             httpPost.addHeader("User-Agent", "MaxiPago-SDK/1.0 (Java; Linux x86_64)");
-
+            for (String key : headers.keySet()){
+                if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(headers.get(key))){
+                    httpPost.addHeader(key, headers.get(key));
+                }
+            }
             HttpResponse response = null;
 
             response = httpClient.execute(httpPost);
@@ -169,5 +176,11 @@ public abstract class AbstractRequest<A, B> {
         }
 
         return null;
+    }
+
+    public void addHeader(String name, String val) {
+        if(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(val)){
+            headers.put(name, val);
+        }
     }
 }

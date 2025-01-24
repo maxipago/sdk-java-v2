@@ -18,8 +18,10 @@ public class SDWO {
     public String paymentDestination;
 	@XmlElement
     public String merchantTaxId;
-	@XmlElement
+    @XmlElement
     public ReceiverData receiverData;
+    @XmlElement
+    public SenderData senderData;
 	
 	
 	public SDWO setId(String id) {
@@ -54,6 +56,11 @@ public class SDWO {
 
 	public SDWO setReceiverData(ReceiverData receiverData) {
 		this.receiverData = receiverData;
+		return this;
+	}
+
+	public SDWO setSenderData(SenderData senderData) {
+		this.senderData = senderData;
 		return this;
 	}
 }

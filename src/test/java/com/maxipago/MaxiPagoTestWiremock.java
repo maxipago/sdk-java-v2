@@ -1174,8 +1174,15 @@ public class MaxiPagoTestWiremock {
 	        				.setId("12345")
 	        				.setProcessingType(SDWOProcessingType.CASH_IN)
 	        				.setSenderTaxIdentification("56326738000106")
-	        				.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)));
-
+	        				.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)
+                                                .setReceiverData(new ReceiverData()
+                                                                        .setFirstName("Jose")
+                                                                        .setFirstName("Fulano")
+                                                                        .setTaxIdNumber("12345678")
+                                                                        .setWalletAccountIdentification("123"))
+                                                .setSenderData(new SenderData()
+                                                                        .setTaxIdNumber("12345678910"))));
+       maxiPago.transactionRequest().addHeader("GLOBAL_TRACE_ID", "12345");
        TransactionResponse response =  maxiPago.transactionRequest().execute();
        assertEquals("0", response.responseCode);
     }
