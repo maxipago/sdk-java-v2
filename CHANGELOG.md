@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.2.0] - 02/ABR/2025
+## [2.2.1] - 03/ABR/2025
 ### Added
 - Inclusao do campo sellerTaxIdName
 
