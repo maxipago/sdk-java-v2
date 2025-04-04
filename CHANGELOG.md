@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.1] - 03/ABR/2025
+### Added
+- Inclusao do campo sellerTaxIdName
+
 ## [2.1.7] - 15/JUL/2024
 ### Added
 - Inclusao de Campos SDWO

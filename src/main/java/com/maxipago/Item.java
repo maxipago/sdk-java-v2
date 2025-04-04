@@ -46,7 +46,10 @@ public class Item {
 
     @XmlElement
     public String sellerTaxId;
-
+    
+    @XmlElement
+    public String sellerTaxIdName;
+    
     public Item() {}
 
     public Item(Integer itemIndex, String itemProductCode, String itemDescription, Integer itemQuantity, Double itemTotalAmount, Double itemUnitCost) {
@@ -68,6 +71,19 @@ public class Item {
         this.sellerCountry = sellerCountry;
         this.sellerCep = sellerCep;
         this.sellerTaxId = sellerTaxId;
+    }
+
+    public Item(Integer itemIndex, String sellerMcc, String sellerId, String sellerAddress, String sellerCity, String sellerState, String sellerCountry, String sellerCep, String sellerTaxId, String sellerTaxIdName) {
+        this.itemIndex = itemIndex;
+        this.sellerMcc = sellerMcc;
+        this.sellerId = sellerId;
+        this.sellerAddress = sellerAddress;
+        this.sellerCity = sellerCity;
+        this.sellerState = sellerState;
+        this.sellerCountry = sellerCountry;
+        this.sellerCep = sellerCep;
+        this.sellerTaxId = sellerTaxId;
+        this.sellerTaxIdName = sellerTaxIdName;
     }
 
     public Item setItemIndex(Integer itemIndex) {
@@ -137,6 +153,11 @@ public class Item {
     
     public Item setSellerTaxId(String sellerTaxId){
         this.sellerTaxId = sellerTaxId;
+        return this;
+    }
+    
+    public Item setSellerTaxIdName(String sellerTaxIdName){
+        this.sellerTaxIdName = sellerTaxIdName;
         return this;
     }
 }
