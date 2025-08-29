@@ -28,7 +28,7 @@ valores esperados em cada requisição.
 A SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
 construtor da classe MaxiPago:
 
-### Produção
+## Produção
 
 ```java
 MaxiPago maxiPago = new MaxiPago(Environment.production(
@@ -527,7 +527,12 @@ maxiPago.sale()
                                                                 .setTaxIdNumber("123556")
                                                                 .setWalletAccountIdentification("342432409"))
                                         .setSenderData(new SenderData()
-                                                                .setTaxIdNumber("123456"))));
+                                                                .setTaxIdNumber("123456")
+                                                                .setFirstName("Nome")
+                                                                .setLastNam("Sobrenome")
+                                                                .setAddress("Rua Volkswagen 100")
+                                                                .setCity("Sao Paulo")
+                                                                .setCountry("BRA"))));
 				  
 
 TransactionResponse response =  maxiPago.transactionRequest().execute();
