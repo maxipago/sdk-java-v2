@@ -2,7 +2,7 @@
 
 ## [2.3.0] - 29/AGO/2025
 ### Added
-- Inclusao de campos firstName, lastName, address, city e country no senderData
+- Inclusão de campos firstName, lastName, address, city e country no senderData
 
 ## [2.2.1] - 03/ABR/2025
 ### Added

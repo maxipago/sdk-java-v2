@@ -28,7 +28,7 @@ valores esperados em cada requisição.
 A SDK pode utilizar as credenciais de sandbox ou de produção. Para isso, basta passar o ambiente como parâmetro para o
 construtor da classe MaxiPago:
 
-## Produção
+### Produção
 
 ```java
 MaxiPago maxiPago = new MaxiPago(Environment.production(
