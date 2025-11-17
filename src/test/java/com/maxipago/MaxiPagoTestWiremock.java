@@ -1181,7 +1181,12 @@ public class MaxiPagoTestWiremock {
                                                                         .setTaxIdNumber("12345678")
                                                                         .setWalletAccountIdentification("123"))
                                                 .setSenderData(new SenderData()
-                                                                        .setTaxIdNumber("12345678910"))));
+                                                                        .setTaxIdNumber("12345678910")
+                                                                        .setFirstName("Nome")
+                                                                        .setLastName("Sobrenome")
+                                                                        .setAddress("Rua Volkswagen 100")
+                                                                        .setCity("Sao Paulo")
+                                                                        .setCountry("BRA"))));
        maxiPago.transactionRequest().addHeader("GLOBAL_TRACE_ID", "12345");
        TransactionResponse response =  maxiPago.transactionRequest().execute();
        assertEquals("0", response.responseCode);

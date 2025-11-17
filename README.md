@@ -527,7 +527,12 @@ maxiPago.sale()
                                                                 .setTaxIdNumber("123556")
                                                                 .setWalletAccountIdentification("342432409"))
                                         .setSenderData(new SenderData()
-                                                                .setTaxIdNumber("123456"))));
+                                                                .setTaxIdNumber("123456")
+                                                                .setFirstName("Nome")
+                                                                .setLastNam("Sobrenome")
+                                                                .setAddress("Rua Volkswagen 100")
+                                                                .setCity("Sao Paulo")
+                                                                .setCountry("BRA"))));
 				  
 
 TransactionResponse response =  maxiPago.transactionRequest().execute();
