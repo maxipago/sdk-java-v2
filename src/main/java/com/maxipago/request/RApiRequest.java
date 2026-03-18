@@ -3,7 +3,6 @@ package com.maxipago.request;
 import com.maxipago.Environment;
 import com.maxipago.Record;
 import com.maxipago.ResultSetInfo;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
