@@ -1249,7 +1249,7 @@ public class MaxiPagoTestWiremock {
     @Test
     public void shoudReturnRateLimited () throws Exception {
         
-        MaxiPago maxiPago = prepareTooManyRequestsResponse(CARDONFILE_RESPONSE, RAPI_RATELIMIT_EXEDED);
+        MaxiPago maxiPago = prepareTooManyRequestsResponse(RAPI_RATELIMIT_EXEDED, REPORTS_API);
         
         maxiPago.consultTransaction(merchantId);
         
