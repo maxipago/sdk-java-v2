@@ -151,7 +151,11 @@ public abstract class AbstractRequest<A, B> {
                         break;
                 }
             }
+        } catch (Exception e){
+            e.printStackTrace();
         }
+
+        return response;
     }
 
     public B execute() {
