@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
@@ -115,6 +118,42 @@ public abstract class AbstractRequest<A, B> {
         return response;
     }
 
+    protected B writeRateLimitedResponse (){
+        B response = getResponseObject();
+
+        try {
+            Field[] fields = response.getClass().getDeclaredFields();
+            for (Field field : fields){
+                field.setAccessible(true);
+                switch (field.getName()) {
+                    case "errorCode":
+                        field.set(response, String.valueOf(1));
+                        break;
+                    case "errorMsg":
+                        field.set(response, "Rate limit excedido para merchant_id=");
+                        break;
+                    case "command":
+                        field.set(response, ((RApiRequest)this).command);
+                        break;
+                    case "time":
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+                        formatter.setTimeZone(TimeZone.getDefault());
+                        field.set(response, formatter.format(new Date(System.currentTimeMillis())));
+                        break;
+                    case "resultSetInfo":
+                        field.set(response, null);
+                        break;
+                    case "records":
+                        field.set(response, null);
+                        break;
+                    case "statusCode":
+                        field.set(response, 429);
+                        break;
+                }
+            }
+        }
+    }
+
     public B execute() {
         StringWriter writer = new StringWriter();
 
@@ -158,6 +197,10 @@ public abstract class AbstractRequest<A, B> {
 
             if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
                 responseEntityContent = new GZIPInputStream(responseEntityContent);
+            }
+
+            if (429 == response.getStatusLine().getStatusCode()){
+                return writeRateLimitedResponse();
             }
 
             return parse(responseEntityContent);

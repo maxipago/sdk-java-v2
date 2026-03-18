@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rapi-response>
-	<header>
-		<errorCode>1</errorCode>
-		<errorMsg>Rate limit exceded para merchant_id=xxxxxxx</errorMsg>
-		<command>transactionDetailReport</command>
-		<time>05-17-2023 15:56:48</time>
-	</header>
-	<result>
-		<resultSetInfo>
-			<totalNumberOfRecords>0</totalNumberOfRecords>
-			<pageNumber>1</pageNumber>
-		</resultSetInfo>
-		</records>
-	</result>
-</rapi-response>
+Rate limit exceded para merchant_id=xxxxxxx

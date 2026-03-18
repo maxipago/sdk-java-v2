@@ -45,7 +45,7 @@ public class MaxiPagoTestWiremock {
     private static String CARDONFILE_RESPONSE="cardOnFileResponse.xml";
     private static String SALE_DECLINED_RESPONSE="saleDeclinedResponse.xml";
     private static String AUTH_ERROR_RESPONSE="authErrorResponse.xml";
-    private static String RAPI_RATELIMIT_EXEDED="rapiRateLimitExceded.xml";
+    private static String RAPI_RATELIMIT_EXEDED="rapiRateLimitedResponse.xml";
     private static String UNIVERSAL_API="/UniversalAPI/postXML";
     private static String REPORTS_API="/ReportsAPI/servlet/ReportsAPI";
     private static final String RAPI_REFERENCE_NUMBER = "2023059999355845";

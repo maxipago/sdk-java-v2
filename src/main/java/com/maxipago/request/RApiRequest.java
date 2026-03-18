@@ -4,7 +4,6 @@ import com.maxipago.Environment;
 import com.maxipago.Record;
 import com.maxipago.ResultSetInfo;
 
-import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -83,14 +82,6 @@ public class RApiRequest extends AbstractRequest<RApiRequest, RApiResponse> {
                     }
 
                     response.records.add(record);
-                }
-            
-            case "statusCode":
-                if (StringUtils.startsWith(getTextContent(document, "errorMsg"), "Rate limit")){
-                    response.statusCode = 429;
-                }
-                else {
-                    response.statusCode = 200;
                 }
 
         }
