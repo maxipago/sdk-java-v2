@@ -118,7 +118,7 @@ public abstract class AbstractRequest<A, B> {
         return response;
     }
 
-    protected RApiResponse writeRateLimitedResponse (){
+    protected B writeRateLimitedResponse (){
         RApiResponse response = new RApiResponse();
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
@@ -131,7 +131,7 @@ public abstract class AbstractRequest<A, B> {
         response.records = null;
         response.statusCode = 429;
 
-        return response;
+        return (B)response;
     }
 
     public B execute() {
