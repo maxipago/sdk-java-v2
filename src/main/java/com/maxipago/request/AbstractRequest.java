@@ -118,42 +118,18 @@ public abstract class AbstractRequest<A, B> {
         return response;
     }
 
-    protected B writeRateLimitedResponse (){
-        B response = getResponseObject();
+    protected RApiResponse writeRateLimitedResponse (){
+        RApiResponse response = new RApiResponse();
 
-        try {
-            Field[] fields = response.getClass().getDeclaredFields();
-            for (Field field : fields){
-                field.setAccessible(true);
-                switch (field.getName()) {
-                    case "errorCode":
-                        field.set(response, String.valueOf(1));
-                        break;
-                    case "errorMsg":
-                        field.set(response, "Rate limit excedido para merchant_id=");
-                        break;
-                    case "command":
-                        field.set(response, ((RApiRequest)this).command);
-                        break;
-                    case "time":
-                        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-                        formatter.setTimeZone(TimeZone.getDefault());
-                        field.set(response, formatter.format(new Date(System.currentTimeMillis())));
-                        break;
-                    case "resultSetInfo":
-                        field.set(response, null);
-                        break;
-                    case "records":
-                        field.set(response, null);
-                        break;
-                    case "statusCode":
-                        field.set(response, 429);
-                        break;
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getDefault());
+        response.time = formatter.format(new Date(System.currentTimeMillis()));
+        response.errorCode = "1";
+        response.errorMsg = "Rate limit excedido para merchant_id=" + this.verification.getMerchantId();
+        response.command = ((RApiRequest)this).command;
+        response.resultSetInfo = null;
+        response.records = null;
+        response.statusCode = 429;
 
         return response;
     }
