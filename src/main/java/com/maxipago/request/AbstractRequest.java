@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
@@ -115,6 +118,22 @@ public abstract class AbstractRequest<A, B> {
         return response;
     }
 
+    protected B writeRateLimitedResponse (){
+        RApiResponse response = new RApiResponse();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getDefault());
+        response.time = formatter.format(new Date(System.currentTimeMillis()));
+        response.errorCode = "1";
+        response.errorMsg = "Rate limit excedido para merchant_id=" + this.verification.getMerchantId();
+        response.command = ((RApiRequest)this).command;
+        response.resultSetInfo = null;
+        response.records = null;
+        response.statusCode = 429;
+
+        return (B)response;
+    }
+
     public B execute() {
         StringWriter writer = new StringWriter();
 
@@ -158,6 +177,10 @@ public abstract class AbstractRequest<A, B> {
 
             if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
                 responseEntityContent = new GZIPInputStream(responseEntityContent);
+            }
+
+            if (429 == response.getStatusLine().getStatusCode()){
+                return writeRateLimitedResponse();
             }
 
             return parse(responseEntityContent);

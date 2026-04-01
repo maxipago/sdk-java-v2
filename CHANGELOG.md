@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.4.0] - 15/MAR/2026
+### Added
+- Inclusão do campo statusCode e retorno correto de 429
+
 ## [2.3.0] - 29/AGO/2025
 ### Added
 - Inclusão de campos firstName, lastName, address, city e country no senderData

@@ -83,6 +83,9 @@ public class RApiRequest extends AbstractRequest<RApiRequest, RApiResponse> {
                     response.records.add(record);
                 }
 
+            case "statusCode":
+                response.statusCode = 200;
+
         }
     }
 

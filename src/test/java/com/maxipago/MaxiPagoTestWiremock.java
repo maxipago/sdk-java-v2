@@ -38,56 +38,103 @@ import com.maxipago.request.TransactionResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MaxiPagoTestWiremock {
-	private static String merchantId = "11631";
-	private static String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
+    private static String merchantId = "11631";
+    private static String merchantKey = "hbsjs242px5vzpnmqu04xcd2";
     private static String CAPTURED_RESPONSE="capturedResponse.xml";
     private static String RAPI_RESPONSE="rapiResponse.xml";
     private static String CARDONFILE_RESPONSE="cardOnFileResponse.xml";
     private static String SALE_DECLINED_RESPONSE="saleDeclinedResponse.xml";
     private static String AUTH_ERROR_RESPONSE="authErrorResponse.xml";
+    private static String RAPI_RATELIMIT_EXEDED="rapiRateLimitedResponse.xml";
     private static String UNIVERSAL_API="/UniversalAPI/postXML";
     private static String REPORTS_API="/ReportsAPI/servlet/ReportsAPI";
     private static final String RAPI_REFERENCE_NUMBER = "2023059999355845";
 
     @Rule
-	public WireMockRule wireMockRule = new WireMockRule(8080);
+    public WireMockRule wireMockRule = new WireMockRule(8080);
     @Mock
-	public HttpServletRequest request;
+        public HttpServletRequest request;
+
+    private String getXMLContextToParse(String strfile) {
+        StringBuilder xmlData = new StringBuilder();
+        try {
+            File file = new File(strfile);
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String dataRead = reader.readLine();
+
+            while (dataRead != null) {
+                xmlData.append(dataRead);
+                dataRead = reader.readLine();
+            }
+            
+            reader.close();
+        } catch (Exception e) {
+            // e.printStackTrace();
+        }
+        return xmlData.toString();
+    }
+    
+    private MaxiPago prepareResponse(String file, String path) {
+        MaxiPago maxiPago = new MaxiPago(new Environment(merchantId, merchantKey, "http://localhost:8080"));
+        
+        String responseXML = getXMLContextToParse("src/test/resources/"+file);
+        
+        stubFor(any(urlPathMatching(path))
+                  .willReturn(aResponse()
+                  .withStatus(200)
+                  .withHeader("Content-Type", "application/xml")
+                  .withBody(responseXML)));
+        return maxiPago;
+    }
+    
+    private MaxiPago prepareTooManyRequestsResponse(String file, String path) {
+        MaxiPago maxiPago = new MaxiPago(new Environment(merchantId, merchantKey, "http://localhost:8080"));
+        
+        String responseXML = getXMLContextToParse("src/test/resources/"+file);
+        
+        stubFor(any(urlPathMatching(path))
+                  .willReturn(aResponse()
+                  .withStatus(429)
+                  .withHeader("Content-Type", "application/xml")
+                  .withBody(responseXML)));
+        return maxiPago;
+    }
     
     @Test
     public void shouldCreateSaleWith3DS() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
-        	.setProcessorId("5")
-        	.setReferenceNum("CreateSaleWith3DS")
-        	.setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
-        	.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
-        	.device(new Device()
-	        		.setColorDepth("1")
-	        		.setJavaEnabled(true)
-	        		.setLanguage("BR")
-	        		.setScreenHeight("550")
-	        		.setScreenWidth("550")
-	        		.setTimeZoneOffset(3))
-	        .setIpAddress("127.0.0.1")
-	        .billingAndShipping((new Customer())
-	        		.setName("Nome como esta gravado no cartao")
-	        		.setAddress("Rua Volkswagen 100")
-	        		.setAddress2("0")
-	        		.setDistrict("Jabaquara")
-	        		.setCity("Sao Paulo")
-	        		.setState("SP")
-	        		.setPostalCode("11111111")
-	        		.setCountry("BR")
-	        		.setPhone("11111111111")
-	        		.setEmail("email.pagador@gmail.com"))
-	        .setCreditCard((new Card())
-	        		.setNumber("5221834791042066")
-	        		.setExpMonth("12")
-	        		.setExpYear("2030")
-	        		.setCvvNumber("123"))
-	        .setPayment(new Payment(100.0));
+            .setProcessorId("5")
+            .setReferenceNum("CreateSaleWith3DS")
+            .setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
+            .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
+            .device(new Device()
+                    .setColorDepth("1")
+                    .setJavaEnabled(true)
+                    .setLanguage("BR")
+                    .setScreenHeight("550")
+                    .setScreenWidth("550")
+                    .setTimeZoneOffset(3))
+            .setIpAddress("127.0.0.1")
+            .billingAndShipping((new Customer())
+                    .setName("Nome como esta gravado no cartao")
+                    .setAddress("Rua Volkswagen 100")
+                    .setAddress2("0")
+                    .setDistrict("Jabaquara")
+                    .setCity("Sao Paulo")
+                    .setState("SP")
+                    .setPostalCode("11111111")
+                    .setCountry("BR")
+                    .setPhone("11111111111")
+                    .setEmail("email.pagador@gmail.com"))
+            .setCreditCard((new Card())
+                    .setNumber("5221834791042066")
+                    .setExpMonth("12")
+                    .setExpYear("2030")
+                    .setCvvNumber("123"))
+            .setPayment(new Payment(100.0));
 
        TransactionResponse response =  maxiPago.transactionRequest().execute();
        assertEquals("0", response.responseCode);
@@ -95,7 +142,7 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldCaptureAuth() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.capture()
                 .setOrderId("0A010492:0172EB977CBC:8CDA:22FB4887")
@@ -107,7 +154,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCancelTransaction() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.cancel()
                 .setTransactionId("9044089");
@@ -117,7 +164,7 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldCreateZeroDollarTransaction() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.zeroDollar()
                 .setProcessorId("1")
@@ -133,7 +180,7 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldCreateSaleWithCredit() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -162,7 +209,7 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldCreateSaleWithTokenCryptogram() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -193,7 +240,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateSaleWithDebit() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("1")
@@ -223,7 +270,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateAuthWithAntiFraud() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
                 .setProcessorId("5")
@@ -294,7 +341,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateSaleWithAntiFraud() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -365,7 +412,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateBoleto() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.boleto()
                 .setProcessorId("12")
@@ -394,7 +441,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateOnlineDebit() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         // 17 - BRADESCO
         // 18 - ITAU
@@ -423,7 +470,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldRefundTransaction() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.refund()
                 .setTransactionId("9044118");
@@ -433,7 +480,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldRefundPixTransaction() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.pixRefund()
                 .setOrderId("0123")
@@ -445,7 +492,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateRecurringPayment() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.recurringPayment()
                 .setProcessorId("5")
@@ -482,7 +529,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldModifyRecurringPayment() {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.modifyRecurring()
                 .setOrderId("0A01048D:01717A02CF80:7FC7:5639916D")
@@ -518,7 +565,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCancelRecurringPayment() {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.cancelRecurring()
                 .setOrderId("0A01048D:01717A02CF80:7FC7:5639916D");
@@ -528,7 +575,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateConsumer() {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.addConsumer()
                 .setCustomerIdExt("123")
@@ -550,7 +597,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldUpdateConsumer() {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.updateConsumer()
                 .setCustomerId("3039749")
@@ -573,7 +620,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldAddCardOnFile() {
-    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.addCardOnFile()
                 .setCustomerId("3039749")
@@ -597,7 +644,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateAuthWithToken() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
                 .setProcessorId("5")
@@ -621,7 +668,7 @@ public class MaxiPagoTestWiremock {
     }
 
     public void shouldCreateSaleWithToken() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -646,7 +693,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateZeroDollarTransactionAndSaveOnFile() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.zeroDollar()
                 .setProcessorId("5")
@@ -663,7 +710,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateAuthAndSaveOnFile() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
                 .setProcessorId("5")
@@ -693,7 +740,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateSaleAndSaveOnFile() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
                 .setProcessorId("5")
@@ -723,7 +770,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateRecurringPaymentWithToken() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.recurringPayment()
                 .setProcessorId("5")
@@ -757,7 +804,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldDeleteCardOnFile() {
-    	MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CARDONFILE_RESPONSE, UNIVERSAL_API);
 
         maxiPago.deleteCardOnFile()
                 .setCustomerId("3039749")
@@ -768,7 +815,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldDeleteConsumer() {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.deleteConsumer()
                 .setCustomerId("3039749");
@@ -778,7 +825,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldConsultTransaction() {
-    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
         maxiPago.consultTransaction("8704233");
 
@@ -791,7 +838,7 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldConsultOrderList() {
-    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
         maxiPago.consultOrderList(ReportsPeriodEnum.LAST_MONTH)
                 .setPageSize(5)
@@ -812,7 +859,7 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldCreatePix() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.pix()
                 .setProcessorId("205")
@@ -820,7 +867,7 @@ public class MaxiPagoTestWiremock {
                 .setIpAddress("127.0.0.1")
                 .setPayment(new Payment(20.00))
                 .setPix((new Pix())
-                		.setExpirationTime(86400) // 1 dia
+                        .setExpirationTime(86400) // 1 dia
                         .setPaymentInfo("Uma informação sobre o pagamento")
                         .addInfo("Info adicional", "R$ 20,00"));
 
@@ -830,7 +877,7 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldCreatePixWithCustomerInfo() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.pix()
                 .setProcessorId("205")
@@ -838,11 +885,11 @@ public class MaxiPagoTestWiremock {
                 .setIpAddress("127.0.0.1")
                 .setPayment(new Payment(20.00))
                 .setBilling(new Customer()
-                		.setName("Nome do Pagador")
+                        .setName("Nome do Pagador")
                         .setEmail("email.pagador@gmail.com")
                         .addDocument(new Document("CPF", "58877649020")))
                 .setPix((new Pix())
-                		.setExpirationTime(86400) // 1 dia
+                        .setExpirationTime(86400) // 1 dia
                         .setPaymentInfo("Uma informação sobre o pagamento")
                         .addInfo("Info adicional", "R$ 20,00"));
 
@@ -852,29 +899,29 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateAuth() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(SALE_DECLINED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(SALE_DECLINED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.auth()
-        	.setProcessorId("5")
-			.setReferenceNum("CreateAuth")
-			.setIpAddress("127.0.0.1")
-			.billingAndShipping((new Customer())
-					.setName("Nome como esta gravado no cartao")
-					.setAddress("Rua Volkswagen, 100")
-					.setAddress2("0")
-					.setDistrict("Jabaquara")
-					.setCity("Sao Paulo")
-					.setState("SP")
-					.setPostalCode("11111111")
-					.setCountry("BR")
-					.setPhone("11111111111")
-					.setEmail("email.pagador@gmail.com"))
-	        .setCreditCard((new Card())
-	        		.setNumber("5448280000000007")
-	        		.setExpMonth("12")
-	        		.setExpYear("2028")
-	        		.setCvvNumber("123"))
-	        .setPayment(new Payment(100.0));
+            .setProcessorId("5")
+            .setReferenceNum("CreateAuth")
+            .setIpAddress("127.0.0.1")
+            .billingAndShipping((new Customer())
+                    .setName("Nome como esta gravado no cartao")
+                    .setAddress("Rua Volkswagen, 100")
+                    .setAddress2("0")
+                    .setDistrict("Jabaquara")
+                    .setCity("Sao Paulo")
+                    .setState("SP")
+                    .setPostalCode("11111111")
+                    .setCountry("BR")
+                    .setPhone("11111111111")
+                    .setEmail("email.pagador@gmail.com"))
+            .setCreditCard((new Card())
+                    .setNumber("5448280000000007")
+                    .setExpMonth("12")
+                    .setExpYear("2028")
+                    .setCvvNumber("123"))
+            .setPayment(new Payment(100.0));
 
         TransactionResponse response = maxiPago.transactionRequest().execute();
         
@@ -887,190 +934,190 @@ public class MaxiPagoTestWiremock {
     
     @Test
     public void shouldConsultOrder() {
-    	MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
         
         maxiPago.consultOrder("0A0104BA:017270E43DE2:ACBF:0B4E365C");
 
         RApiResponse response = maxiPago.rapiRequest().execute();
 
         for (Record record : response.records) {
-        	if (record.transactionId!=null && "549470346".equals(record.transactionId) )
+            if (record.transactionId!=null && "549470346".equals(record.transactionId) )
             {
-        		assertEquals("00", record.brandCode);
-        		assertEquals("Success.", record.brandMessage);
-        		assertEquals("MPLMMHZV76543", record.brandTransactionID);
-        		assertEquals("01", record.brandMac);
+                assertEquals("00", record.brandCode);
+                assertEquals("Success.", record.brandMessage);
+                assertEquals("MPLMMHZV76543", record.brandTransactionID);
+                assertEquals("01", record.brandMac);
             }
         }
     }
     
-	@Test
-	public void shouldConsultOrderByReferenceNum() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNum() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNum(RAPI_REFERENCE_NUMBER);
+        maxiPago.consultReferenceNum(RAPI_REFERENCE_NUMBER);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumYesterday() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumYesterday() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.YESTERDAY);
+        maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.YESTERDAY);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumLastSevenDays() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumLastSevenDays() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_SEVEN);
+        maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_SEVEN);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumLastThirtyDays() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumLastThirtyDays() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_THIRTY);
+        maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_THIRTY);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumThisWeek() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumThisWeek() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
+        maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumThisMonth() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumThisMonth() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
+        maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.THIS_WEEK);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumLastMonth() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumLastMonth() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_MONTH);
+        maxiPago.consultReferenceNumPeriod(RAPI_REFERENCE_NUMBER, ReportsPeriodEnum.LAST_MONTH);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
-	@Test
-	public void shouldConsultOrderByReferenceNumRange() {
-		MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
+    @Test
+    public void shouldConsultOrderByReferenceNumRange() {
+        MaxiPago maxiPago = prepareResponse(RAPI_RESPONSE, REPORTS_API);
 
-		// mm/dd/yyyy
-		String startDate = "05/05/2023";
-		String endDate = "06/05/2023";
+        // mm/dd/yyyy
+        String startDate = "05/05/2023";
+        String endDate = "06/05/2023";
 
-		// hh:mm:ss
-		String startTime = "00:00:01";
-		String endTime = "23:59:59";
+        // hh:mm:ss
+        String startTime = "00:00:01";
+        String endTime = "23:59:59";
 
-		maxiPago.consultReferenceNumPeriodRange(RAPI_REFERENCE_NUMBER, startDate, endDate, startTime, endTime);
+        maxiPago.consultReferenceNumPeriodRange(RAPI_REFERENCE_NUMBER, startDate, endDate, startTime, endTime);
 
-		RApiResponse response = maxiPago.rapiRequest().execute();
+        RApiResponse response = maxiPago.rapiRequest().execute();
 
-		boolean rightRecord = false;
-		for (Record record : response.records) {
-			if (record.referenceNum != null) {
-				if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
-					rightRecord = true;
-					break;
-				}
-			}
-		}
-		Assert.assertTrue(rightRecord);
-	}
+        boolean rightRecord = false;
+        for (Record record : response.records) {
+            if (record.referenceNum != null) {
+                if (RAPI_REFERENCE_NUMBER.equals(record.referenceNum)) {
+                    rightRecord = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue(rightRecord);
+    }
 
     @Test
     public void invalidProcessorIdTest(){
@@ -1102,79 +1149,46 @@ public class MaxiPagoTestWiremock {
         assertEquals("1", response.errorCode);
     }
     
-    private String getXMLContextToParse(String strfile) {
-		StringBuilder xmlData = new StringBuilder();
-		try {
-			File file = new File(strfile);
-
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String dataRead = reader.readLine();
-
-			while (dataRead != null) {
-				xmlData.append(dataRead);
-				dataRead = reader.readLine();
-			}
-			
-			reader.close();
-		} catch (Exception e) {
-			// e.printStackTrace();
-		}
-		return xmlData.toString();
-	}
-    
-    private MaxiPago prepareResponse(String file, String path) {
-		MaxiPago maxiPago = new MaxiPago(new Environment(merchantId, merchantKey, "http://localhost:8080"));
-    	
-    	String responseXML = getXMLContextToParse("src/test/resources/"+file);
-        
-        stubFor(any(urlPathMatching(path))
-				  .willReturn(aResponse()
-				  .withStatus(200)
-				  .withHeader("Content-Type", "application/xml")
-				  .withBody(responseXML)));
-		return maxiPago;
-	}
-    
     @Test
     public void shouldCreateSaleWith3DSAndSDWO() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
-        	.setProcessorId("5")
-        	.setReferenceNum("CreateSaleWith3DS")
-        	.setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
-        	.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
-        	.device(new Device()
-	        		.setColorDepth("1")
-	        		.setJavaEnabled(true)
-	        		.setLanguage("BR")
-	        		.setScreenHeight("550")
-	        		.setScreenWidth("550")
-	        		.setTimeZoneOffset(3))
-	        .setIpAddress("127.0.0.1")
-	        .billingAndShipping((new Customer())
-	        		.setName("Nome como esta gravado no cartao")
-	        		.setAddress("Rua Volkswagen 100")
-	        		.setAddress2("0")
-	        		.setDistrict("Jabaquara")
-	        		.setCity("Sao Paulo")
-	        		.setState("SP")
-	        		.setPostalCode("11111111")
-	        		.setCountry("BR")
-	        		.setPhone("11111111111")
-	        		.setEmail("email.pagador@gmail.com"))
-	        .setCreditCard((new Card())
-	        		.setNumber("5221834791042066")
-	        		.setExpMonth("12")
-	        		.setExpYear("2030")
-	        		.setCvvNumber("123"))
-	        .setPayment(new Payment(100.0))
-	        .setWallet(new Wallet()
-	        		.setSDWO(new SDWO()
-	        				.setId("12345")
-	        				.setProcessingType(SDWOProcessingType.CASH_IN)
-	        				.setSenderTaxIdentification("56326738000106")
-	        				.setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)
+            .setProcessorId("5")
+            .setReferenceNum("CreateSaleWith3DS")
+            .setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
+            .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
+            .device(new Device()
+                    .setColorDepth("1")
+                    .setJavaEnabled(true)
+                    .setLanguage("BR")
+                    .setScreenHeight("550")
+                    .setScreenWidth("550")
+                    .setTimeZoneOffset(3))
+            .setIpAddress("127.0.0.1")
+            .billingAndShipping((new Customer())
+                    .setName("Nome como esta gravado no cartao")
+                    .setAddress("Rua Volkswagen 100")
+                    .setAddress2("0")
+                    .setDistrict("Jabaquara")
+                    .setCity("Sao Paulo")
+                    .setState("SP")
+                    .setPostalCode("11111111")
+                    .setCountry("BR")
+                    .setPhone("11111111111")
+                    .setEmail("email.pagador@gmail.com"))
+            .setCreditCard((new Card())
+                    .setNumber("5221834791042066")
+                    .setExpMonth("12")
+                    .setExpYear("2030")
+                    .setCvvNumber("123"))
+            .setPayment(new Payment(100.0))
+            .setWallet(new Wallet()
+                    .setSDWO(new SDWO()
+                            .setId("12345")
+                            .setProcessingType(SDWOProcessingType.CASH_IN)
+                            .setSenderTaxIdentification("56326738000106")
+                            .setBusinessApplicationIdentifier(BusinessApplicationIdentifier.CBPS)
                                                 .setReceiverData(new ReceiverData()
                                                                         .setFirstName("Jose")
                                                                         .setFirstName("Fulano")
@@ -1194,41 +1208,53 @@ public class MaxiPagoTestWiremock {
 
     @Test
     public void shouldCreateSaleWithSellerTaxIdName() throws PropertyException {
-    	MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
+        MaxiPago maxiPago = prepareResponse(CAPTURED_RESPONSE, UNIVERSAL_API);
 
         maxiPago.sale()
-        	.setProcessorId("5")
-        	.setReferenceNum("CreateSaleWith3DS")
-        	.setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
-        	.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
-        	.device(new Device()
-	        		.setColorDepth("1")
-	        		.setJavaEnabled(true)
-	        		.setLanguage("BR")
-	        		.setScreenHeight("550")
-	        		.setScreenWidth("550")
-	        		.setTimeZoneOffset(3))
-	        .setIpAddress("127.0.0.1")
-	        .billingAndShipping((new Customer())
-	        		.setName("Nome como esta gravado no cartao")
-	        		.setAddress("Rua Volkswagen 100")
-	        		.setAddress2("0")
-	        		.setDistrict("Jabaquara")
-	        		.setCity("Sao Paulo")
-	        		.setState("SP")
-	        		.setPostalCode("11111111")
-	        		.setCountry("BR")
-	        		.setPhone("11111111111")
-	        		.setEmail("email.pagador@gmail.com"))
-	        .setCreditCard((new Card())
-	        		.setNumber("5221834791042066")
-	        		.setExpMonth("12")
-	        		.setExpYear("2030")
-	        		.setCvvNumber("123"))
-	        .setPayment(new Payment(100.0))
+            .setProcessorId("5")
+            .setReferenceNum("CreateSaleWith3DS")
+            .setAuthentication("41", Authentication.DECLINE, ChallengePreference.NO_PREFERENCE, "POSTBACK", "Y")
+            .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36")
+            .device(new Device()
+                    .setColorDepth("1")
+                    .setJavaEnabled(true)
+                    .setLanguage("BR")
+                    .setScreenHeight("550")
+                    .setScreenWidth("550")
+                    .setTimeZoneOffset(3))
+            .setIpAddress("127.0.0.1")
+            .billingAndShipping((new Customer())
+                    .setName("Nome como esta gravado no cartao")
+                    .setAddress("Rua Volkswagen 100")
+                    .setAddress2("0")
+                    .setDistrict("Jabaquara")
+                    .setCity("Sao Paulo")
+                    .setState("SP")
+                    .setPostalCode("11111111")
+                    .setCountry("BR")
+                    .setPhone("11111111111")
+                    .setEmail("email.pagador@gmail.com"))
+            .setCreditCard((new Card())
+                    .setNumber("5221834791042066")
+                    .setExpMonth("12")
+                    .setExpYear("2030")
+                    .setCvvNumber("123"))
+            .setPayment(new Payment(100.0))
                 .addItem(1, "mcc", "sellerId", "sellerAddress", "sellerCity", "sellerState", "sellerCountry", "sellerCep", "sellerTaxId", "sellerTaxIdName");
        maxiPago.transactionRequest().addHeader("GLOBAL_TRACE_ID", "12345");
        TransactionResponse response =  maxiPago.transactionRequest().execute();
        assertEquals("0", response.responseCode);
+    }
+
+    @Test
+    public void shoudReturnRateLimited () throws Exception {
+        
+        MaxiPago maxiPago = prepareTooManyRequestsResponse(RAPI_RATELIMIT_EXEDED, REPORTS_API);
+        
+        maxiPago.consultTransaction(merchantId);
+        
+        RApiResponse response = maxiPago.rapiRequest().execute();
+        
+        assertEquals(429, response.statusCode);
     }
 }

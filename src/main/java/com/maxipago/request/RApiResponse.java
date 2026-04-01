@@ -12,4 +12,5 @@ public class RApiResponse {
     public String time;
     public ResultSetInfo resultSetInfo;
     public List<Record> records;
+    public int statusCode;
 }
