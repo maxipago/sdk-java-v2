@@ -1,0 +1,17 @@
+name: Build-n-Test
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+    - name: Run the Maven verify phase
+      run: mvn --batch-mode --update-snapshots verify
