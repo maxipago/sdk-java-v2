@@ -12,8 +12,8 @@ jobs:
     - uses: actions/setup-java@v4
       with:
         java-version: '8'
-        distribution: 'temurin'
-    - name: Run the Maven Verify phase
-      run: mvn --batch-mode --update-snapshots verify
-    - name: Run the Maven Test phase
-      run: mvn test
+        distribution: 'openjdk'
+    - name: Run the Maven Verify and Test phase
+      run: |
+        mvn --batch-mode --update-snapshots verify
+        mvn test
