@@ -13,5 +13,7 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
-    - name: Run the Maven verify phase
+    - name: Run the Maven Verify phase
       run: mvn --batch-mode --update-snapshots verify
+    - name: Run the Maven Test phase
+      run: mvn test
